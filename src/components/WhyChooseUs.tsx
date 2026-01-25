@@ -1,5 +1,6 @@
 import { Shield, Clock, Palette, Award, Wrench, Leaf } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ScrollReveal from "./ScrollReveal";
 import detailImage from "@/assets/detail-railing.jpg";
 
 const WhyChooseUs = () => {
@@ -18,30 +19,38 @@ const WhyChooseUs = () => {
     <section id="about" className="section-padding bg-background">
       <div className="container-narrow">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative">
-            <div className="aspect-square overflow-hidden rounded-sm shadow-luxury">
-              <img src={detailImage} alt="Premium stainless steel railing detail" className="w-full h-full object-cover" />
+          <ScrollReveal direction="left">
+            <div className="relative">
+              <div className="aspect-square overflow-hidden rounded-sm shadow-luxury">
+                <img src={detailImage} alt="Premium stainless steel railing detail" className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-gold text-primary p-6 shadow-luxury rtl:-left-6 rtl:right-auto">
+                <div className="text-4xl font-heading font-bold">60+</div>
+                <div className="text-sm uppercase tracking-wider">{t("why.years")}</div>
+              </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-gold text-primary p-6 shadow-luxury rtl:-left-6 rtl:right-auto">
-              <div className="text-4xl font-heading font-bold">60+</div>
-              <div className="text-sm uppercase tracking-wider">{t("why.years")}</div>
-            </div>
-          </div>
+          </ScrollReveal>
+          
           <div>
-            <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">{t("why.label")}</span>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">{t("why.title")}</h2>
-            <p className="text-muted-foreground text-lg mb-10 leading-relaxed">{t("why.desc")}</p>
+            <ScrollReveal>
+              <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">{t("why.label")}</span>
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">{t("why.title")}</h2>
+              <p className="text-muted-foreground text-lg mb-10 leading-relaxed">{t("why.desc")}</p>
+            </ScrollReveal>
+            
             <div className="grid sm:grid-cols-2 gap-6">
-              {features.map((feature) => (
-                <div key={feature.titleKey} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-sm flex items-center justify-center">
-                    <feature.icon className="w-5 h-5 text-gold" />
+              {features.map((feature, index) => (
+                <ScrollReveal key={feature.titleKey} delay={0.1 * index}>
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-sm flex items-center justify-center">
+                      <feature.icon className="w-5 h-5 text-gold" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">{t(feature.titleKey)}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{t(feature.descKey)}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">{t(feature.titleKey)}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{t(feature.descKey)}</p>
-                  </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>

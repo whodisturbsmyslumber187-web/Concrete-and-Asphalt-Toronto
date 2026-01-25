@@ -2,11 +2,12 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import emailjs from "@emailjs/browser";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ScrollReveal from "./ScrollReveal";
 
 const Contact = () => {
   const { t } = useLanguage();
@@ -74,28 +75,18 @@ const Contact = () => {
     setSubmitStatus("idle");
 
     try {
-      // EmailJS send - you'll need to set up your EmailJS service
-      // For now, we'll simulate a successful submission
-      // Replace these with your actual EmailJS credentials
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        phone: formData.phone,
-        project_type: formData.projectType,
-        message: formData.details,
-        captcha_token: captchaToken,
-      };
+      // Insert into Supabase database
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          project_type: formData.projectType,
+          details: formData.details,
+        });
 
-      // Uncomment and configure when you have EmailJS set up:
-      // await emailjs.send(
-      //   'YOUR_SERVICE_ID',
-      //   'YOUR_TEMPLATE_ID',
-      //   templateParams,
-      //   'YOUR_PUBLIC_KEY'
-      // );
-
-      // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      if (error) throw error;
       
       setSubmitStatus("success");
       toast.success(t("contact.success"));
@@ -125,168 +116,177 @@ const Contact = () => {
       <div className="container-narrow">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left: Info */}
-          <div>
-            <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">
-              {t("contact.label")}
-            </span>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">
-              {t("contact.title")}
-            </h2>
-            <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
-              {t("contact.desc")}
-            </p>
+          <ScrollReveal direction="left">
+            <div>
+              <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">
+                {t("contact.label")}
+              </span>
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">
+                {t("contact.title")}
+              </h2>
+              <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
+                {t("contact.desc")}
+              </p>
 
-            {/* Contact Details */}
-            <div className="grid sm:grid-cols-2 gap-6">
-              {contactInfo.map((item) => (
-                <div key={item.label} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-sm flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-gold" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground mb-1">
-                      {item.label}
-                    </div>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="font-medium hover:text-gold transition-colors whitespace-pre-line"
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <div className="font-medium whitespace-pre-line">
-                        {item.value}
+              {/* Contact Details */}
+              <div className="grid sm:grid-cols-2 gap-6">
+                {contactInfo.map((item, index) => (
+                  <ScrollReveal key={item.label} delay={0.1 * index}>
+                    <div className="flex gap-4">
+                      <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-sm flex items-center justify-center">
+                        <item.icon className="w-5 h-5 text-gold" />
                       </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+                      <div>
+                        <div className="text-sm text-muted-foreground mb-1">
+                          {item.label}
+                        </div>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            className="font-medium hover:text-gold transition-colors whitespace-pre-line"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <div className="font-medium whitespace-pre-line">
+                            {item.value}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right: Form */}
-          <div className="bg-card p-8 lg:p-10 rounded-sm shadow-medium">
-            <h3 className="font-heading text-2xl mb-6">{t("contact.formTitle")}</h3>
-            
-            {submitStatus === "success" ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
-                <h4 className="font-heading text-xl mb-2">{t("contact.success")}</h4>
-              </div>
-            ) : (
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-4">
+          <ScrollReveal direction="right" delay={0.2}>
+            <div className="bg-card p-8 lg:p-10 rounded-sm shadow-medium">
+              <h3 className="font-heading text-2xl mb-6">{t("contact.formTitle")}</h3>
+              
+              {submitStatus === "success" ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <CheckCircle className="w-16 h-16 text-gold mb-4" />
+                  <h4 className="font-heading text-xl mb-2">{t("contact.success")}</h4>
+                </div>
+              ) : (
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        {t("contact.name")}
+                      </label>
+                      <Input
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder={t("contact.namePlaceholder")}
+                        className="bg-background border-border focus:border-gold"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        {t("contact.phone")}
+                      </label>
+                      <Input
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder={t("contact.phonePlaceholder")}
+                        className="bg-background border-border focus:border-gold"
+                        required
+                      />
+                    </div>
+                  </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
-                      {t("contact.name")}
+                      {t("contact.emailLabel")}
                     </label>
                     <Input
-                      name="name"
-                      value={formData.name}
+                      type="email"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
-                      placeholder={t("contact.namePlaceholder")}
+                      placeholder={t("contact.emailPlaceholder")}
                       className="bg-background border-border focus:border-gold"
                       required
                     />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
-                      {t("contact.phone")}
+                      {t("contact.projectType")}
                     </label>
-                    <Input
-                      name="phone"
-                      value={formData.phone}
+                    <select 
+                      name="projectType"
+                      value={formData.projectType}
                       onChange={handleInputChange}
-                      placeholder={t("contact.phonePlaceholder")}
-                      className="bg-background border-border focus:border-gold"
+                      className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                      required
+                    >
+                      <option value="">{t("contact.selectType")}</option>
+                      <option value="residential">{t("contact.typeResidential")}</option>
+                      <option value="commercial">{t("contact.typeCommercial")}</option>
+                      <option value="hospitality">{t("contact.typeHospitality")}</option>
+                      <option value="other">{t("contact.typeOther")}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">
+                      {t("contact.details")}
+                    </label>
+                    <Textarea
+                      name="details"
+                      value={formData.details}
+                      onChange={handleInputChange}
+                      placeholder={t("contact.detailsPlaceholder")}
+                      rows={4}
+                      className="bg-background border-border focus:border-gold resize-none"
                       required
                     />
                   </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    {t("contact.emailLabel")}
-                  </label>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder={t("contact.emailPlaceholder")}
-                    className="bg-background border-border focus:border-gold"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    {t("contact.projectType")}
-                  </label>
-                  <select 
-                    name="projectType"
-                    value={formData.projectType}
-                    onChange={handleInputChange}
-                    className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
-                    required
+                  
+                  {/* hCaptcha */}
+                  <div className="flex justify-center">
+                    <HCaptcha
+                      ref={captchaRef}
+                      sitekey="10000000-ffff-ffff-ffff-000000000001"
+                      onVerify={handleCaptchaVerify}
+                      onExpire={handleCaptchaExpire}
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    variant="gold" 
+                    size="lg" 
+                    className="w-full group"
+                    disabled={isSubmitting}
                   >
-                    <option value="">{t("contact.selectType")}</option>
-                    <option value="residential">{t("contact.typeResidential")}</option>
-                    <option value="commercial">{t("contact.typeCommercial")}</option>
-                    <option value="hospitality">{t("contact.typeHospitality")}</option>
-                    <option value="other">{t("contact.typeOther")}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    {t("contact.details")}
-                  </label>
-                  <Textarea
-                    name="details"
-                    value={formData.details}
-                    onChange={handleInputChange}
-                    placeholder={t("contact.detailsPlaceholder")}
-                    rows={4}
-                    className="bg-background border-border focus:border-gold resize-none"
-                    required
-                  />
-                </div>
-                
-                {/* hCaptcha */}
-                <div className="flex justify-center">
-                  <HCaptcha
-                    ref={captchaRef}
-                    sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - replace with your actual key
-                    onVerify={handleCaptchaVerify}
-                    onExpire={handleCaptchaExpire}
-                  />
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  variant="gold" 
-                  size="lg" 
-                  className="w-full group"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    t("contact.sending")
-                  ) : (
-                    <>
-                      {t("contact.submit")}
-                      <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
-                    </>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {t("contact.sending")}
+                      </>
+                    ) : (
+                      <>
+                        {t("contact.submit")}
+                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                      </>
+                    )}
+                  </Button>
+                  
+                  {submitStatus === "error" && (
+                    <div className="flex items-center gap-2 text-destructive text-sm">
+                      <AlertCircle className="w-4 h-4" />
+                      {t("contact.error")}
+                    </div>
                   )}
-                </Button>
-                
-                {submitStatus === "error" && (
-                  <div className="flex items-center gap-2 text-red-500 text-sm">
-                    <AlertCircle className="w-4 h-4" />
-                    {t("contact.error")}
-                  </div>
-                )}
-              </form>
-            )}
-          </div>
+                </form>
+              )}
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
