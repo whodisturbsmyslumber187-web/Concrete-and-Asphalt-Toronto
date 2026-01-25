@@ -24,13 +24,77 @@ Keep responses concise, friendly, and professional. If someone wants a detailed 
 
 When you sense the customer wants to proceed with a quote or speak to someone, suggest they click the "Chat on WhatsApp" button for immediate assistance.`;
 
+// Input validation constants
+const MAX_MESSAGES = 50;
+const MAX_MESSAGE_LENGTH = 4000;
+const VALID_ROLES = ["user", "assistant", "system"];
+
+interface ChatMessage {
+  role: string;
+  content: string;
+}
+
+const validateMessages = (messages: unknown): { valid: boolean; error?: string } => {
+  // Check if messages is an array
+  if (!Array.isArray(messages)) {
+    return { valid: false, error: "Invalid request format: messages must be an array" };
+  }
+
+  // Check message count
+  if (messages.length === 0) {
+    return { valid: false, error: "At least one message is required" };
+  }
+
+  if (messages.length > MAX_MESSAGES) {
+    return { valid: false, error: `Too many messages (max ${MAX_MESSAGES})` };
+  }
+
+  // Validate each message
+  for (let i = 0; i < messages.length; i++) {
+    const msg = messages[i] as ChatMessage;
+
+    // Check message structure
+    if (!msg || typeof msg !== "object") {
+      return { valid: false, error: `Invalid message at index ${i}` };
+    }
+
+    // Check content exists and is a string
+    if (!msg.content || typeof msg.content !== "string") {
+      return { valid: false, error: `Invalid message content at index ${i}` };
+    }
+
+    // Check content length
+    if (msg.content.length > MAX_MESSAGE_LENGTH) {
+      return { valid: false, error: `Message too long at index ${i} (max ${MAX_MESSAGE_LENGTH} characters)` };
+    }
+
+    // Validate role
+    if (!msg.role || !VALID_ROLES.includes(msg.role)) {
+      return { valid: false, error: `Invalid message role at index ${i}` };
+    }
+  }
+
+  return { valid: true };
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { messages } = await req.json();
+    const body = await req.json();
+    const { messages } = body;
+
+    // Validate input
+    const validation = validateMessages(messages);
+    if (!validation.valid) {
+      return new Response(
+        JSON.stringify({ error: validation.error }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -80,7 +144,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Chat error:", error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      JSON.stringify({ error: "An error occurred processing your request" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

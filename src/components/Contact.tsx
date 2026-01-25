@@ -66,6 +66,9 @@ const Contact = () => {
     setCaptchaToken(null);
   };
 
+  // Get hCaptcha sitekey from environment or use test key for development only
+  const hcaptchaSitekey = import.meta.env.VITE_HCAPTCHA_SITEKEY || "10000000-ffff-ffff-ffff-000000000001";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -91,16 +94,24 @@ const Contact = () => {
 
       if (error) throw error;
       
-      // Send notification (email + WhatsApp alert)
-      await supabase.functions.invoke('send-notification', {
+      // Send notification with CAPTCHA token for backend verification
+      const { error: notificationError } = await supabase.functions.invoke('send-notification', {
         body: {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           project_type: formData.projectType,
           details: formData.details,
+        },
+        headers: {
+          'x-captcha-token': captchaToken,
         }
       });
+
+      if (notificationError) {
+        console.error("Notification error:", notificationError);
+        // Don't throw - form was still submitted to database
+      }
       
       setSubmitStatus("success");
       toast.success(t("contact.success"));
@@ -117,7 +128,6 @@ const Contact = () => {
       captchaRef.current?.resetCaptcha();
       
     } catch (error) {
-      console.error("Form submission error:", error);
       setSubmitStatus("error");
       toast.error(t("contact.error"));
     } finally {
@@ -270,7 +280,7 @@ const Contact = () => {
                     }>
                       <HCaptcha
                         ref={captchaRef}
-                        sitekey="10000000-ffff-ffff-ffff-000000000001"
+                        sitekey={hcaptchaSitekey}
                         onVerify={handleCaptchaVerify}
                         onExpire={handleCaptchaExpire}
                       />
