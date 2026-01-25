@@ -1,18 +1,21 @@
-import { useState, useRef } from "react";
+import { useState, useRef, lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ScrollReveal from "./ScrollReveal";
 
+// Lazy load hCaptcha to reduce initial bundle size
+const HCaptcha = lazy(() => import("@hcaptcha/react-hcaptcha"));
+
 const Contact = () => {
   const { t } = useLanguage();
   const formRef = useRef<HTMLFormElement>(null);
-  const captchaRef = useRef<HCaptcha>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const captchaRef = useRef<any>(null);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -258,14 +261,20 @@ const Contact = () => {
                     />
                   </div>
                   
-                  {/* hCaptcha */}
-                  <div className="flex justify-center">
-                    <HCaptcha
-                      ref={captchaRef}
-                      sitekey="10000000-ffff-ffff-ffff-000000000001"
-                      onVerify={handleCaptchaVerify}
-                      onExpire={handleCaptchaExpire}
-                    />
+                  {/* hCaptcha - lazy loaded */}
+                  <div className="flex justify-center min-h-[78px]">
+                    <Suspense fallback={
+                      <div className="h-[78px] w-[303px] bg-muted animate-pulse rounded flex items-center justify-center">
+                        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                      </div>
+                    }>
+                      <HCaptcha
+                        ref={captchaRef}
+                        sitekey="10000000-ffff-ffff-ffff-000000000001"
+                        onVerify={handleCaptchaVerify}
+                        onExpire={handleCaptchaExpire}
+                      />
+                    </Suspense>
                   </div>
                   
                   <Button 
