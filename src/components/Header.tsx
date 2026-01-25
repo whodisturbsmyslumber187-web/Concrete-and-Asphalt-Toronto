@@ -44,7 +44,9 @@ const Header = () => {
       <div className="container-narrow flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-2">
-          <span className="font-heading text-2xl md:text-3xl font-semibold text-foreground">
+          <span className={`font-heading text-2xl md:text-3xl font-semibold ${
+            isScrolled ? "text-foreground" : "text-ivory"
+          }`}>
             Apex<span className="text-gradient-gold">Stairs</span>
           </span>
         </a>
@@ -55,7 +57,11 @@ const Header = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
+              className={`text-sm font-medium transition-colors uppercase tracking-wider ${
+                isScrolled 
+                  ? "text-muted-foreground hover:text-gold" 
+                  : "text-ivory/90 hover:text-gold"
+              }`}
             >
               {link.label}
             </a>
@@ -67,7 +73,11 @@ const Header = () => {
           <LanguageSwitcher />
           <a
             href="tel:+97141234567"
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+              isScrolled
+                ? "text-muted-foreground hover:text-gold"
+                : "text-gold hover:text-gold-light"
+            }`}
           >
             <Phone className="w-4 h-4" />
             +971 4 123 4567
