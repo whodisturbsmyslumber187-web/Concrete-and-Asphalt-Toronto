@@ -88,6 +88,17 @@ const Contact = () => {
 
       if (error) throw error;
       
+      // Send notification (email + WhatsApp alert)
+      await supabase.functions.invoke('send-notification', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          project_type: formData.projectType,
+          details: formData.details,
+        }
+      });
+      
       setSubmitStatus("success");
       toast.success(t("contact.success"));
       
