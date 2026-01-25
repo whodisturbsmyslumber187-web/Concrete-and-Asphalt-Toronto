@@ -85,6 +85,12 @@ export const translations: Translations = {
   "project3.desc": { en: "Grand helical staircase with ornate wrought iron railings featuring gold leaf accents. Classic elegance for Dubai's premier hospitality destination.", ar: "سلم حلزوني فخم مع درابزينات حديد مشغول مزينة بلمسات ذهبية. أناقة كلاسيكية لوجهة الضيافة الأولى في دبي." },
   "project4.title": { en: "Downtown Loft Residence", ar: "شقة لوفت داون تاون" },
   "project4.desc": { en: "Industrial-chic steel staircase with blackened finish and oak treads. Cable railings maintain an open, airy feel in this contemporary penthouse.", ar: "سلم فولاذي بطابع صناعي أنيق مع تشطيب أسود ودرجات بلوط. درابزينات الكيبل تحافظ على إحساس مفتوح ومنعش في هذه الشقة العلوية المعاصرة." },
+  "project5.title": { en: "Jumeirah Grand Ballroom", ar: "قاعة جميرا الكبرى" },
+  "project5.desc": { en: "Opulent curved marble staircase with ornate gold railings and crystal chandelier accent. A statement piece for this luxury hotel's grand entrance.", ar: "سلم رخامي منحني فاخر مع درابزينات ذهبية مزخرفة وثريا كريستالية. قطعة بارزة لمدخل هذا الفندق الفاخر." },
+  "project6.title": { en: "Palm Jumeirah Estate", ar: "عقار نخلة جميرا" },
+  "project6.desc": { en: "Contemporary marble staircase with sleek gold-tone railings in a light-filled atrium. Clean lines meet classic elegance in this waterfront mansion.", ar: "سلم رخامي معاصر مع درابزينات ذهبية أنيقة في بهو مضاء. خطوط نظيفة تلتقي بالأناقة الكلاسيكية في هذا القصر المطل على الواجهة البحرية." },
+  "project7.title": { en: "Heritage Museum Hall", ar: "قاعة المتحف التراثي" },
+  "project7.desc": { en: "Majestic double-helix staircase with intricate bronze metalwork creating a stunning architectural centerpiece for this cultural landmark.", ar: "سلم حلزوني مزدوج مهيب مع أعمال معدنية برونزية معقدة تخلق قطعة معمارية مذهلة لهذا المعلم الثقافي." },
   
   // Testimonials
   "testimonials.label": { en: "Client Stories", ar: "قصص العملاء" },

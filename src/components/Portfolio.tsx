@@ -18,6 +18,13 @@ import project3Img3 from "@/assets/project3-img3.jpg";
 import project4Img1 from "@/assets/project4-img1.jpg";
 import project4Img2 from "@/assets/project4-img2.jpg";
 import project4Img3 from "@/assets/project4-img3.jpg";
+import project5Img1 from "@/assets/project5-img1.jpg";
+import project5Img2 from "@/assets/project5-img2.jpg";
+import project5Img3 from "@/assets/project5-img3.jpg";
+import project6Img1 from "@/assets/project6-img1.jpg";
+import project6Img2 from "@/assets/project6-img2.jpg";
+import project6Img3 from "@/assets/project6-img3.jpg";
+import project7Img1 from "@/assets/project7-img1.jpg";
 
 const Portfolio = () => {
   const { t } = useLanguage();
@@ -52,6 +59,27 @@ const Portfolio = () => {
       category: "portfolio.residential",
       descKey: "project4.desc",
       images: [project4Img1, project4Img2, project4Img3],
+    },
+    {
+      id: 5,
+      titleKey: "project5.title",
+      category: "portfolio.hospitality",
+      descKey: "project5.desc",
+      images: [project5Img1, project5Img2, project5Img3],
+    },
+    {
+      id: 6,
+      titleKey: "project6.title",
+      category: "portfolio.commercial",
+      descKey: "project6.desc",
+      images: [project6Img1, project6Img2, project6Img3],
+    },
+    {
+      id: 7,
+      titleKey: "project7.title",
+      category: "portfolio.residential",
+      descKey: "project7.desc",
+      images: [project7Img1, project5Img1, project6Img1],
     },
   ];
 
