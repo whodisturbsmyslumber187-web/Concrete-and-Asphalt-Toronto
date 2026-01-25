@@ -199,13 +199,13 @@ const Portfolio = () => {
               <p className="text-primary-foreground/80 text-sm md:text-base mb-4 md:mb-6">{t(selectedProjectData.descKey)}</p>
               
               {/* Main Image */}
-              <div className="relative aspect-video mb-3 md:mb-4 overflow-hidden rounded-sm">
+              <div className="relative w-full mb-3 md:mb-4 overflow-hidden rounded-sm bg-charcoal/50 flex items-center justify-center min-h-[50vh] md:min-h-[60vh]">
                 <AnimatePresence mode="wait">
                   <motion.img 
                     key={currentImageIndex}
                     src={selectedProjectData.images[currentImageIndex]} 
                     alt={`${t(selectedProjectData.titleKey)} ${currentImageIndex + 1}`} 
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -216,29 +216,29 @@ const Portfolio = () => {
                 {/* Navigation Arrows */}
                 <button 
                   onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
+                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-charcoal/80 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
                 >
                   <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
+                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-charcoal/80 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
                 >
                   <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               </div>
               
               {/* Thumbnails */}
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 justify-center">
                 {selectedProjectData.images.map((img, idx) => (
                   <button 
                     key={idx} 
                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
-                    className={`flex-shrink-0 w-16 h-12 md:w-20 md:h-16 overflow-hidden rounded-sm transition-all ${
+                    className={`flex-shrink-0 w-20 h-14 md:w-24 md:h-18 overflow-hidden rounded-sm transition-all bg-charcoal/30 flex items-center justify-center ${
                       idx === currentImageIndex ? 'ring-2 ring-gold' : 'opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt="" className="max-w-full max-h-full object-contain" />
                   </button>
                 ))}
               </div>
