@@ -1,19 +1,67 @@
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroImage from "@/assets/hero-staircase.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
+import heroSlide1 from "@/assets/hero-slide-1.jpg";
+import heroSlide2 from "@/assets/hero-slide-2.jpg";
+import heroSlide3 from "@/assets/hero-slide-3.jpg";
+
+const slides = [heroSlide1, heroSlide2, heroSlide3];
 
 const Hero = () => {
+  const { t } = useLanguage();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Luxury spiral staircase with glass railings"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-charcoal/30" />
+      {/* Background Slideshow */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <img
+            src={slide}
+            alt={`Luxury staircase ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ))}
+      
+      {/* Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-charcoal/30" />
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-12 h-1 rounded-full transition-all duration-300 ${
+              index === currentSlide ? "bg-gold" : "bg-primary-foreground/40"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
 
       {/* Content */}
@@ -22,7 +70,7 @@ const Hero = () => {
           {/* Tagline */}
           <div className="animate-fade-up opacity-0" style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}>
             <span className="inline-block text-gold-light uppercase tracking-[0.3em] text-sm font-medium mb-6">
-              Premium Craftsmanship Since 2008
+              {t("hero.tagline")}
             </span>
           </div>
 
@@ -31,8 +79,9 @@ const Hero = () => {
             className="animate-fade-up opacity-0 font-heading text-4xl md:text-5xl lg:text-7xl font-semibold text-primary-foreground leading-tight mb-6"
             style={{ animationDelay: "0.4s", animationFillMode: "forwards" }}
           >
-            Elevating Dubai's Skyline with Custom{" "}
-            <span className="text-gradient-gold">Steel & Glass</span> Artistry
+            {t("hero.title1")}{" "}
+            <span className="text-gradient-gold">{t("hero.title2")}</span>{" "}
+            {t("hero.title3")}
           </h1>
 
           {/* Subheadline */}
@@ -40,7 +89,7 @@ const Hero = () => {
             className="animate-fade-up opacity-0 text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl leading-relaxed"
             style={{ animationDelay: "0.6s", animationFillMode: "forwards" }}
           >
-            Bespoke staircases and railings designed for discerning homeowners, architects, and commercial developers across the UAE.
+            {t("hero.subtitle")}
           </p>
 
           {/* CTAs */}
@@ -48,12 +97,21 @@ const Hero = () => {
             className="animate-fade-up opacity-0 flex flex-col sm:flex-row gap-4"
             style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}
           >
-            <Button variant="gold" size="xl" className="group">
-              Request a Consultation
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <Button 
+              variant="gold" 
+              size="xl" 
+              className="group"
+              onClick={() => scrollToSection("contact")}
+            >
+              {t("hero.cta1")}
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
             </Button>
-            <Button variant="heroOutline" size="xl">
-              View Our Projects
+            <Button 
+              variant="heroOutline" 
+              size="xl"
+              onClick={() => scrollToSection("portfolio")}
+            >
+              {t("hero.cta2")}
             </Button>
           </div>
 
@@ -64,15 +122,15 @@ const Hero = () => {
           >
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-gold rounded-full" />
-              <span>Dubai Municipality Licensed</span>
+              <span>{t("hero.badge1")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-gold rounded-full" />
-              <span>316 Marine Grade Steel</span>
+              <span>{t("hero.badge2")}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-gold rounded-full" />
-              <span>15+ Years Experience</span>
+              <span>{t("hero.badge3")}</span>
             </div>
           </div>
         </div>
