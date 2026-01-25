@@ -35,34 +35,34 @@ const Testimonials = () => {
     <section className="section-padding bg-primary">
       <div className="container-narrow">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">
+        <div className="text-center mb-10 md:mb-16">
+          <span className="text-gold uppercase tracking-[0.2em] md:tracking-[0.3em] text-xs md:text-sm font-medium">
             Client Stories
           </span>
-          <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl mt-4 text-primary-foreground">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl lg:text-6xl mt-3 md:mt-4 text-primary-foreground">
             Trusted by Dubai's Finest
           </h2>
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-charcoal-light/50 backdrop-blur-sm p-8 rounded-sm relative"
+              className="bg-charcoal-light/50 backdrop-blur-sm p-5 md:p-8 rounded-sm relative"
             >
               {/* Quote Icon */}
-              <Quote className="w-10 h-10 text-gold/30 absolute top-6 right-6" />
+              <Quote className="w-8 h-8 md:w-10 md:h-10 text-gold/30 absolute top-4 right-4 md:top-6 md:right-6" />
 
               {/* Rating */}
-              <div className="flex gap-1 mb-6">
+              <div className="flex gap-1 mb-4 md:mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                  <Star key={i} className="w-3 h-3 md:w-4 md:h-4 fill-gold text-gold" />
                 ))}
               </div>
 
               {/* Quote */}
-              <blockquote className="text-primary-foreground/90 mb-8 leading-relaxed">
+              <blockquote className="text-primary-foreground/90 text-sm md:text-base mb-6 md:mb-8 leading-relaxed">
                 "{testimonial.quote}"
               </blockquote>
 

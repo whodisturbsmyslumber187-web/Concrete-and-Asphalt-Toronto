@@ -29,13 +29,13 @@ const Footer = () => {
     <footer className="bg-primary text-primary-foreground">
       {/* Main Footer */}
       <div className="container-narrow section-padding">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <span className="font-heading text-2xl font-semibold">
+          <div className="col-span-2 lg:col-span-1">
+            <span className="font-heading text-xl md:text-2xl font-semibold">
               Apex<span className="text-gradient-gold">Stairs</span>
             </span>
-            <p className="text-primary-foreground/70 mt-4 mb-6 text-sm leading-relaxed">
+            <p className="text-primary-foreground/70 mt-3 md:mt-4 mb-4 md:mb-6 text-xs md:text-sm leading-relaxed">
               Elevating Dubai's architectural landscape with bespoke staircases
               and premium railings since 2008.
             </p>

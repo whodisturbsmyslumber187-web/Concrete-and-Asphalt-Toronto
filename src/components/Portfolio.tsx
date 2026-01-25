@@ -115,19 +115,19 @@ const Portfolio = () => {
     <section id="portfolio" className="section-padding bg-secondary">
       <div className="container-narrow">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-6 mb-10 md:mb-16">
           <ScrollReveal>
             <div>
-              <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">
+              <span className="text-gold uppercase tracking-[0.2em] md:tracking-[0.3em] text-xs md:text-sm font-medium">
                 {t("portfolio.label")}
               </span>
-              <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl mt-4">
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl lg:text-6xl mt-3 md:mt-4">
                 {t("portfolio.title")}
               </h2>
             </div>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <Button variant="elegant" className="group self-start md:self-auto" onClick={scrollToContact}>
+            <Button variant="elegant" className="group self-start md:self-auto w-full sm:w-auto" onClick={scrollToContact}>
               {t("portfolio.viewAll")}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -135,7 +135,7 @@ const Portfolio = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           {projects.map((project, index) => (
             <ScrollReveal key={project.id} delay={0.1 * index}>
               <div
@@ -149,19 +149,20 @@ const Portfolio = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <span className="text-gold text-sm uppercase tracking-wider">{t(project.category)}</span>
-                  <h3 className="font-heading text-2xl text-primary-foreground mt-2 mb-2">{t(project.titleKey)}</h3>
-                  <p className="text-primary-foreground/80 text-sm mb-4 line-clamp-2">{t(project.descKey)}</p>
-                  <button className="flex items-center gap-2 text-gold text-sm font-medium hover:gap-3 transition-all">
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden md:block" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 hidden md:block">
+                  <span className="text-gold text-xs md:text-sm uppercase tracking-wider">{t(project.category)}</span>
+                  <h3 className="font-heading text-lg md:text-2xl text-primary-foreground mt-1 md:mt-2 mb-1 md:mb-2">{t(project.titleKey)}</h3>
+                  <p className="text-primary-foreground/80 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2">{t(project.descKey)}</p>
+                  <button className="flex items-center gap-2 text-gold text-xs md:text-sm font-medium hover:gap-3 transition-all">
                     {t("portfolio.viewProject")}
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
                   </button>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-charcoal/80 to-transparent group-hover:opacity-0 transition-opacity duration-300">
+                {/* Mobile: Always visible overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-charcoal/90 to-transparent md:group-hover:opacity-0 transition-opacity duration-300">
                   <span className="text-gold-light text-xs uppercase tracking-wider">{t(project.category)}</span>
-                  <h3 className="font-heading text-xl text-primary-foreground mt-1">{t(project.titleKey)}</h3>
+                  <h3 className="font-heading text-base md:text-xl text-primary-foreground mt-1">{t(project.titleKey)}</h3>
                 </div>
               </div>
             </ScrollReveal>
@@ -173,32 +174,32 @@ const Portfolio = () => {
       <AnimatePresence>
         {selectedProject && selectedProjectData && (
           <motion.div 
-            className="fixed inset-0 z-50 bg-charcoal/95 flex items-center justify-center p-4" 
+            className="fixed inset-0 z-50 bg-charcoal/95 flex items-center justify-center p-3 md:p-4" 
             onClick={closeProject}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <button 
-              className="absolute top-6 right-6 text-primary-foreground hover:text-gold transition-colors z-10" 
+              className="absolute top-4 right-4 md:top-6 md:right-6 text-primary-foreground hover:text-gold transition-colors z-10" 
               onClick={closeProject}
             >
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6 md:w-8 md:h-8" />
             </button>
             
             <motion.div 
-              className="max-w-5xl w-full" 
+              className="max-w-5xl w-full max-h-[90vh] overflow-y-auto" 
               onClick={e => e.stopPropagation()}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h3 className="font-heading text-3xl text-primary-foreground mb-2">{t(selectedProjectData.titleKey)}</h3>
-              <p className="text-gold text-sm uppercase tracking-wider mb-4">{t(selectedProjectData.category)}</p>
-              <p className="text-primary-foreground/80 mb-6">{t(selectedProjectData.descKey)}</p>
+              <h3 className="font-heading text-xl md:text-3xl text-primary-foreground mb-1 md:mb-2">{t(selectedProjectData.titleKey)}</h3>
+              <p className="text-gold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">{t(selectedProjectData.category)}</p>
+              <p className="text-primary-foreground/80 text-sm md:text-base mb-4 md:mb-6">{t(selectedProjectData.descKey)}</p>
               
               {/* Main Image */}
-              <div className="relative aspect-video mb-4 overflow-hidden rounded-sm">
+              <div className="relative aspect-video mb-3 md:mb-4 overflow-hidden rounded-sm">
                 <AnimatePresence mode="wait">
                   <motion.img 
                     key={currentImageIndex}
@@ -215,25 +216,25 @@ const Portfolio = () => {
                 {/* Navigation Arrows */}
                 <button 
                   onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
+                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
+                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-charcoal/70 rounded-full flex items-center justify-center text-primary-foreground hover:bg-gold transition-colors"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               </div>
               
               {/* Thumbnails */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 overflow-x-auto pb-2">
                 {selectedProjectData.images.map((img, idx) => (
                   <button 
                     key={idx} 
                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
-                    className={`w-20 h-16 overflow-hidden rounded-sm transition-all ${
+                    className={`flex-shrink-0 w-16 h-12 md:w-20 md:h-16 overflow-hidden rounded-sm transition-all ${
                       idx === currentImageIndex ? 'ring-2 ring-gold' : 'opacity-60 hover:opacity-100'
                     }`}
                   >
