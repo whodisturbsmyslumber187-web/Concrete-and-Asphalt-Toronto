@@ -1,33 +1,124 @@
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import emailjs from "@emailjs/browser";
+import { toast } from "sonner";
 
 const Contact = () => {
+  const { t } = useLanguage();
+  const formRef = useRef<HTMLFormElement>(null);
+  const captchaRef = useRef<HCaptcha>(null);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    projectType: "",
+    details: "",
+  });
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+
   const contactInfo = [
     {
       icon: MapPin,
-      label: "Visit Our Showroom",
+      label: t("contact.visit"),
       value: "Industrial Area 13, Al Quoz\nDubai, UAE",
     },
     {
       icon: Phone,
-      label: "Call Us",
+      label: t("contact.call"),
       value: "+971 4 123 4567",
       href: "tel:+97141234567",
     },
     {
       icon: Mail,
-      label: "Email Us",
+      label: t("contact.email"),
       value: "info@apexstairs.ae",
       href: "mailto:info@apexstairs.ae",
     },
     {
       icon: Clock,
-      label: "Working Hours",
-      value: "Sun - Thu: 8AM - 6PM\nFri - Sat: Closed",
+      label: t("contact.hours"),
+      value: t("contact.hoursValue"),
     },
   ];
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCaptchaVerify = (token: string) => {
+    setCaptchaToken(token);
+  };
+
+  const handleCaptchaExpire = () => {
+    setCaptchaToken(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!captchaToken) {
+      toast.error(t("contact.captchaError"));
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      // EmailJS send - you'll need to set up your EmailJS service
+      // For now, we'll simulate a successful submission
+      // Replace these with your actual EmailJS credentials
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        project_type: formData.projectType,
+        message: formData.details,
+        captcha_token: captchaToken,
+      };
+
+      // Uncomment and configure when you have EmailJS set up:
+      // await emailjs.send(
+      //   'YOUR_SERVICE_ID',
+      //   'YOUR_TEMPLATE_ID',
+      //   templateParams,
+      //   'YOUR_PUBLIC_KEY'
+      // );
+
+      // Simulating API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setSubmitStatus("success");
+      toast.success(t("contact.success"));
+      
+      // Reset form
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        projectType: "",
+        details: "",
+      });
+      setCaptchaToken(null);
+      captchaRef.current?.resetCaptcha();
+      
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitStatus("error");
+      toast.error(t("contact.error"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="section-padding bg-background">
@@ -36,15 +127,13 @@ const Contact = () => {
           {/* Left: Info */}
           <div>
             <span className="text-gold uppercase tracking-[0.3em] text-sm font-medium">
-              Get in Touch
+              {t("contact.label")}
             </span>
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl mt-4 mb-6">
-              Let's Build Something Extraordinary
+              {t("contact.title")}
             </h2>
             <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
-              Whether you're an architect with a grand vision, a homeowner seeking
-              the perfect staircase, or a developer planning your next landmark — we're
-              here to bring your ideas to life.
+              {t("contact.desc")}
             </p>
 
             {/* Contact Details */}
@@ -78,65 +167,125 @@ const Contact = () => {
 
           {/* Right: Form */}
           <div className="bg-card p-8 lg:p-10 rounded-sm shadow-medium">
-            <h3 className="font-heading text-2xl mb-6">Request a Consultation</h3>
-            <form className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
+            <h3 className="font-heading text-2xl mb-6">{t("contact.formTitle")}</h3>
+            
+            {submitStatus === "success" ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+                <h4 className="font-heading text-xl mb-2">{t("contact.success")}</h4>
+              </div>
+            ) : (
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">
+                      {t("contact.name")}
+                    </label>
+                    <Input
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder={t("contact.namePlaceholder")}
+                      className="bg-background border-border focus:border-gold"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">
+                      {t("contact.phone")}
+                    </label>
+                    <Input
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder={t("contact.phonePlaceholder")}
+                      className="bg-background border-border focus:border-gold"
+                      required
+                    />
+                  </div>
+                </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Full Name
+                    {t("contact.emailLabel")}
                   </label>
                   <Input
-                    placeholder="Your name"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder={t("contact.emailPlaceholder")}
                     className="bg-background border-border focus:border-gold"
+                    required
                   />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Phone Number
+                    {t("contact.projectType")}
                   </label>
-                  <Input
-                    placeholder="+971 XX XXX XXXX"
-                    className="bg-background border-border focus:border-gold"
+                  <select 
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                    required
+                  >
+                    <option value="">{t("contact.selectType")}</option>
+                    <option value="residential">{t("contact.typeResidential")}</option>
+                    <option value="commercial">{t("contact.typeCommercial")}</option>
+                    <option value="hospitality">{t("contact.typeHospitality")}</option>
+                    <option value="other">{t("contact.typeOther")}</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    {t("contact.details")}
+                  </label>
+                  <Textarea
+                    name="details"
+                    value={formData.details}
+                    onChange={handleInputChange}
+                    placeholder={t("contact.detailsPlaceholder")}
+                    rows={4}
+                    className="bg-background border-border focus:border-gold resize-none"
+                    required
                   />
                 </div>
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="bg-background border-border focus:border-gold"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Project Type
-                </label>
-                <select className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold">
-                  <option value="">Select project type</option>
-                  <option value="residential">Residential</option>
-                  <option value="commercial">Commercial</option>
-                  <option value="hospitality">Hospitality</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Project Details
-                </label>
-                <Textarea
-                  placeholder="Tell us about your project, timeline, and any specific requirements..."
-                  rows={4}
-                  className="bg-background border-border focus:border-gold resize-none"
-                />
-              </div>
-              <Button variant="gold" size="lg" className="w-full group">
-                Send Inquiry
-                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </form>
+                
+                {/* hCaptcha */}
+                <div className="flex justify-center">
+                  <HCaptcha
+                    ref={captchaRef}
+                    sitekey="10000000-ffff-ffff-ffff-000000000001" // Test key - replace with your actual key
+                    onVerify={handleCaptchaVerify}
+                    onExpire={handleCaptchaExpire}
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  variant="gold" 
+                  size="lg" 
+                  className="w-full group"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    t("contact.sending")
+                  ) : (
+                    <>
+                      {t("contact.submit")}
+                      <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                    </>
+                  )}
+                </Button>
+                
+                {submitStatus === "error" && (
+                  <div className="flex items-center gap-2 text-red-500 text-sm">
+                    <AlertCircle className="w-4 h-4" />
+                    {t("contact.error")}
+                  </div>
+                )}
+              </form>
+            )}
           </div>
         </div>
       </div>

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,12 +18,20 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "Services", href: "#services" },
-    { label: "Portfolio", href: "#portfolio" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    { label: t("nav.home"), href: "#home" },
+    { label: t("nav.services"), href: "#services" },
+    { label: t("nav.portfolio"), href: "#portfolio" },
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.contact"), href: "#contact" },
   ];
+
+  const scrollToContact = () => {
+    const element = document.getElementById("contact");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header
@@ -42,7 +53,7 @@ const Header = () => {
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
-              key={link.label}
+              key={link.href}
               href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
             >
@@ -51,8 +62,9 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* CTA & Phone */}
-        <div className="hidden lg:flex items-center gap-6">
+        {/* CTA & Language */}
+        <div className="hidden lg:flex items-center gap-4">
+          <LanguageSwitcher />
           <a
             href="tel:+97141234567"
             className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -60,19 +72,22 @@ const Header = () => {
             <Phone className="w-4 h-4" />
             +971 4 123 4567
           </a>
-          <Button variant="gold" size="lg">
-            Get a Quote
+          <Button variant="gold" size="lg" onClick={scrollToContact}>
+            {t("header.getQuote")}
           </Button>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-2 text-foreground"
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-foreground"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -81,7 +96,7 @@ const Header = () => {
           <nav className="container-narrow py-6 flex flex-col gap-4">
             {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.href}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
@@ -97,8 +112,8 @@ const Header = () => {
                 <Phone className="w-4 h-4" />
                 +971 4 123 4567
               </a>
-              <Button variant="gold" size="lg" className="w-full">
-                Get a Quote
+              <Button variant="gold" size="lg" className="w-full" onClick={scrollToContact}>
+                {t("header.getQuote")}
               </Button>
             </div>
           </nav>
