@@ -92,7 +92,9 @@ const Header = () => {
           <LanguageSwitcher />
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-foreground"
+            className={`p-2 transition-colors ${
+              isScrolled ? "text-foreground" : "text-ivory"
+            }`}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
