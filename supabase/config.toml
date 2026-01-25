@@ -1,7 +1,1 @@
-project_id = "sywgvxdxjiuzoowmboil"
-
-[functions.chat]
-verify_jwt = false
-
-[functions.send-notification]
-verify_jwt = false
+project_id = "iyuvszgwvvldeypvukfo"
