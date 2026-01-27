@@ -1,8 +1,9 @@
-import { useState, useRef, lazy, Suspense } from "react";
+import { useState, useRef, lazy, Suspense, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { useInView } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -14,8 +15,18 @@ const HCaptcha = lazy(() => import("@hcaptcha/react-hcaptcha"));
 const Contact = () => {
   const { t } = useLanguage();
   const formRef = useRef<HTMLFormElement>(null);
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const captchaRef = useRef<any>(null);
+  const isInView = useInView(captchaContainerRef, { once: true, margin: "200px" });
+  const [shouldLoadCaptcha, setShouldLoadCaptcha] = useState(false);
+
+  // Only load captcha when form is visible or user starts interacting
+  useEffect(() => {
+    if (isInView) {
+      setShouldLoadCaptcha(true);
+    }
+  }, [isInView]);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -271,20 +282,26 @@ const Contact = () => {
                     />
                   </div>
                   
-                  {/* hCaptcha - lazy loaded */}
-                  <div className="flex justify-center min-h-[78px]">
-                    <Suspense fallback={
+                  {/* hCaptcha - lazy loaded only when visible */}
+                  <div ref={captchaContainerRef} className="flex justify-center min-h-[78px]">
+                    {shouldLoadCaptcha ? (
+                      <Suspense fallback={
+                        <div className="h-[78px] w-[303px] bg-muted animate-pulse rounded flex items-center justify-center">
+                          <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                        </div>
+                      }>
+                        <HCaptcha
+                          ref={captchaRef}
+                          sitekey={hcaptchaSitekey}
+                          onVerify={handleCaptchaVerify}
+                          onExpire={handleCaptchaExpire}
+                        />
+                      </Suspense>
+                    ) : (
                       <div className="h-[78px] w-[303px] bg-muted animate-pulse rounded flex items-center justify-center">
                         <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
                       </div>
-                    }>
-                      <HCaptcha
-                        ref={captchaRef}
-                        sitekey={hcaptchaSitekey}
-                        onVerify={handleCaptchaVerify}
-                        onExpire={handleCaptchaExpire}
-                      />
-                    </Suspense>
+                    )}
                   </div>
                   
                   <Button 
