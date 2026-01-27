@@ -29,6 +29,64 @@ const MAX_MESSAGES = 50;
 const MAX_MESSAGE_LENGTH = 4000;
 const VALID_ROLES = ["user", "assistant", "system"];
 
+// Rate limiting configuration
+const RATE_LIMIT_REQUESTS = 15; // Max requests per window
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute window
+
+// In-memory rate limiter (resets on function cold start, but provides basic protection)
+const rateLimiter = new Map<string, { count: number; reset: number }>();
+
+// Cleanup old entries periodically to prevent memory growth
+const cleanupRateLimiter = () => {
+  const now = Date.now();
+  for (const [key, value] of rateLimiter.entries()) {
+    if (value.reset < now) {
+      rateLimiter.delete(key);
+    }
+  }
+};
+
+const checkRateLimit = (identifier: string): { allowed: boolean; retryAfter?: number } => {
+  const now = Date.now();
+  const record = rateLimiter.get(identifier);
+
+  // Cleanup old entries occasionally
+  if (Math.random() < 0.1) {
+    cleanupRateLimiter();
+  }
+
+  if (!record || record.reset < now) {
+    rateLimiter.set(identifier, { count: 1, reset: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true };
+  }
+
+  if (record.count >= RATE_LIMIT_REQUESTS) {
+    const retryAfter = Math.ceil((record.reset - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+
+  record.count++;
+  return { allowed: true };
+};
+
+const getClientIdentifier = (req: Request): string => {
+  // Try to get real client IP from various headers
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+  
+  const realIp = req.headers.get("x-real-ip");
+  if (realIp) {
+    return realIp.trim();
+  }
+
+  // Fallback to a fingerprint based on available headers
+  const userAgent = req.headers.get("user-agent") || "unknown";
+  const acceptLanguage = req.headers.get("accept-language") || "unknown";
+  return `fingerprint:${userAgent.substring(0, 50)}:${acceptLanguage.substring(0, 20)}`;
+};
+
 interface ChatMessage {
   role: string;
   content: string;
@@ -83,6 +141,25 @@ serve(async (req) => {
   }
 
   try {
+    // Apply rate limiting
+    const clientId = getClientIdentifier(req);
+    const rateCheck = checkRateLimit(clientId);
+    
+    if (!rateCheck.allowed) {
+      console.log(`Rate limit exceeded for client: ${clientId.substring(0, 20)}...`);
+      return new Response(
+        JSON.stringify({ error: "Rate limit exceeded. Please try again later." }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateCheck.retryAfter || 60)
+          } 
+        }
+      );
+    }
+
     const body = await req.json();
     const { messages } = body;
 
