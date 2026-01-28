@@ -144,6 +144,7 @@ const ChatWidget = () => {
         whileTap={{ scale: 0.95 }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isOpen ? 0 : 1, y: isOpen ? 20 : 0 }}
+        aria-label={isRTL ? "فتح المحادثة" : "Open chat"}
       >
         <MessageCircle className="w-6 h-6" />
       </motion.button>
