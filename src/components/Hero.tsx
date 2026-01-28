@@ -37,6 +37,7 @@ const Hero = () => {
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
+          style={{ willChange: "opacity", transform: "translateZ(0)" }}
         >
           <img
             src={slide}
@@ -56,7 +57,7 @@ const Hero = () => {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-8 md:w-12 h-1 rounded-full transition-all duration-300 ${
+            className={`w-8 md:w-12 h-1 rounded-full transition-colors duration-300 ${
               index === currentSlide ? "bg-gold" : "bg-primary-foreground/40"
             }`}
             aria-label={`Go to slide ${index + 1}`}
