@@ -22,7 +22,7 @@ const WhyChooseUs = () => {
           <ScrollReveal direction="left">
             <div className="relative">
               <div className="aspect-square overflow-hidden rounded-sm shadow-luxury">
-                <img src={detailImage} alt="Premium stainless steel railing detail" className="w-full h-full object-cover" />
+                <img src={detailImage} alt="Premium stainless steel railing detail" loading="lazy" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-gold text-primary p-4 md:p-6 shadow-luxury rtl:-left-4 rtl:right-auto md:rtl:-left-6">
                 <div className="text-3xl md:text-4xl font-heading font-bold">60+</div>

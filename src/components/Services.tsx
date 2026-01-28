@@ -58,6 +58,7 @@ const Services = () => {
                   <img
                     src={service.image}
                     alt={t(service.titleKey)}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
