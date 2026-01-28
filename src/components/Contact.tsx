@@ -250,10 +250,11 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium mb-2 block">
+                    <label htmlFor="projectType" className="text-sm font-medium mb-2 block">
                       {t("contact.projectType")}
                     </label>
                     <select 
+                      id="projectType"
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleInputChange}
