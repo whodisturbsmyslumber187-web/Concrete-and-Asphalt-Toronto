@@ -43,6 +43,7 @@ const Hero = () => {
             src={slide}
             alt={`Luxury staircase ${index + 1}`}
             className="w-full h-full object-cover"
+            fetchPriority={index === 0 ? "high" : "low"}
           />
         </div>
       ))}
