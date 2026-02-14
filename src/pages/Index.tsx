@@ -7,7 +7,9 @@ import Hero from "@/components/Hero";
 const Services = lazy(() => import("@/components/Services"));
 const WhyChooseUs = lazy(() => import("@/components/WhyChooseUs"));
 const Portfolio = lazy(() => import("@/components/Portfolio"));
+const BookingWidget = lazy(() => import("@/components/BookingWidget"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
+const LocationMap = lazy(() => import("@/components/LocationMap"));
 const Contact = lazy(() => import("@/components/Contact"));
 const Footer = lazy(() => import("@/components/Footer"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
@@ -35,7 +37,13 @@ const Index = () => {
             <Portfolio />
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
+            <BookingWidget />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <Testimonials />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <LocationMap />
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
             <Contact />

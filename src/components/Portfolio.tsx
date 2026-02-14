@@ -25,6 +25,26 @@ import project6Img1 from "@/assets/project6-img1.jpg";
 import project6Img2 from "@/assets/project6-img2.jpg";
 import project6Img3 from "@/assets/project6-img3.jpg";
 import project7Img1 from "@/assets/project7-img1.jpg";
+import project8Img1 from "@/assets/project8-img1.jpg";
+import project8Img2 from "@/assets/project8-img2.jpg";
+import project8Img3 from "@/assets/project8-img3.jpg";
+import project8Img4 from "@/assets/project8-img4.jpg";
+import project9Img1 from "@/assets/project9-img1.jpg";
+import project9Img2 from "@/assets/project9-img2.jpg";
+import project9Img3 from "@/assets/project9-img3.jpg";
+import project9Img4 from "@/assets/project9-img4.jpg";
+import project10Img1 from "@/assets/project10-img1.jpg";
+import project10Img2 from "@/assets/project10-img2.jpg";
+import project10Img3 from "@/assets/project10-img3.jpg";
+import project10Img4 from "@/assets/project10-img4.jpg";
+import project11Img1 from "@/assets/project11-img1.jpg";
+import project11Img2 from "@/assets/project11-img2.jpg";
+import project11Img3 from "@/assets/project11-img3.jpg";
+import project11Img4 from "@/assets/project11-img4.jpg";
+import project12Img1 from "@/assets/project12-img1.jpg";
+import project12Img2 from "@/assets/project12-img2.jpg";
+import project12Img3 from "@/assets/project12-img3.jpg";
+import project12Img4 from "@/assets/project12-img4.jpg";
 
 const Portfolio = () => {
   const { t } = useLanguage();
@@ -40,11 +60,32 @@ const Portfolio = () => {
       images: [project1Img1, project1Img2, project1Img3],
     },
     {
+      id: 8,
+      titleKey: "project8.title",
+      category: "portfolio.residential",
+      descKey: "project8.desc",
+      images: [project8Img1, project8Img2, project8Img3, project8Img4],
+    },
+    {
+      id: 9,
+      titleKey: "project9.title",
+      category: "portfolio.residential",
+      descKey: "project9.desc",
+      images: [project9Img1, project9Img2, project9Img3, project9Img4],
+    },
+    {
       id: 2,
       titleKey: "project2.title",
       category: "portfolio.commercial",
       descKey: "project2.desc",
       images: [project2Img1, project2Img2, project2Img3],
+    },
+    {
+      id: 10,
+      titleKey: "project10.title",
+      category: "portfolio.commercial",
+      descKey: "project10.desc",
+      images: [project10Img1, project10Img2, project10Img3, project10Img4],
     },
     {
       id: 3,
@@ -54,11 +95,25 @@ const Portfolio = () => {
       images: [project3Img1, project3Img2, project3Img3],
     },
     {
+      id: 11,
+      titleKey: "project11.title",
+      category: "portfolio.residential",
+      descKey: "project11.desc",
+      images: [project11Img1, project11Img2, project11Img3, project11Img4],
+    },
+    {
       id: 4,
       titleKey: "project4.title",
       category: "portfolio.residential",
       descKey: "project4.desc",
       images: [project4Img1, project4Img2, project4Img3],
+    },
+    {
+      id: 12,
+      titleKey: "project12.title",
+      category: "portfolio.residential",
+      descKey: "project12.desc",
+      images: [project12Img1, project12Img2, project12Img3, project12Img4],
     },
     {
       id: 5,
