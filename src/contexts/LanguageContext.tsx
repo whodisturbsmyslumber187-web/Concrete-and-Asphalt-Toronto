@@ -91,6 +91,16 @@ export const translations: Translations = {
   "project6.desc": { en: "Contemporary marble staircase with sleek gold-tone railings in a light-filled atrium. Clean lines meet classic elegance in this waterfront mansion.", ar: "سلم رخامي معاصر مع درابزينات ذهبية أنيقة في بهو مضاء. خطوط نظيفة تلتقي بالأناقة الكلاسيكية في هذا القصر المطل على الواجهة البحرية." },
   "project7.title": { en: "Heritage Museum Hall", ar: "قاعة المتحف التراثي" },
   "project7.desc": { en: "Majestic double-helix staircase with intricate bronze metalwork creating a stunning architectural centerpiece for this cultural landmark.", ar: "سلم حلزوني مزدوج مهيب مع أعمال معدنية برونزية معقدة تخلق قطعة معمارية مذهلة لهذا المعلم الثقافي." },
+  "project8.title": { en: "Jumeirah Golf Estates Mansion", ar: "قصر جميرا غولف إستيتس" },
+  "project8.desc": { en: "Modern floating glass staircase with LED-lit marble treads and frameless glass balustrade in a double-height foyer. Walnut handrails complement the contemporary villa's warm palette.", ar: "سلم زجاجي عائم حديث مع درجات رخامية مضاءة بالـ LED ودرابزين زجاجي بدون إطار في بهو مزدوج الارتفاع. مقابض الجوز تكمل لوحة الألوان الدافئة للفيلا المعاصرة." },
+  "project9.title": { en: "Al Barsha Royal Palace", ar: "قصر البرشاء الملكي" },
+  "project9.desc": { en: "Grand spiral staircase with ornate hand-forged gold-leaf railings and Calacatta marble treads. A palatial centerpiece inspired by classical Arabian architecture with a contemporary twist.", ar: "سلم لولبي فخم مع درابزينات مطروقة يدوياً بأوراق الذهب ودرجات رخام كالاكاتا. قطعة مركزية ملكية مستوحاة من العمارة العربية الكلاسيكية بلمسة معاصرة." },
+  "project10.title": { en: "Business Bay Tech Hub", ar: "مركز التكنولوجيا بيزنس باي" },
+  "project10.desc": { en: "Industrial-modern multi-floor feature staircase with matte black steel stringers, oak treads, and cable railings. Designed for a premium co-working space spanning three floors.", ar: "سلم صناعي حديث متعدد الطوابق مع عوارض فولاذية سوداء مطفية ودرجات بلوط ودرابزينات كيبل. مصمم لمساحة عمل مشتركة متميزة تمتد على ثلاثة طوابق." },
+  "project11.title": { en: "Marina Skyline Penthouse", ar: "بنتهاوس أفق المارينا" },
+  "project11.desc": { en: "Cantilevered concrete staircase with hidden structural steel and frameless glass balustrade. Panoramic skyline views frame each ascent in this duplex penthouse.", ar: "سلم خرساني معلق مع فولاذ هيكلي مخفي ودرابزين زجاجي بدون إطار. إطلالات بانورامية على الأفق تؤطر كل صعود في هذا البنتهاوس المزدوج." },
+  "project12.title": { en: "Pearl Island Waterfront Villa", ar: "فيلا جزيرة اللؤلؤ البحرية" },
+  "project12.desc": { en: "Marine-grade 316 stainless steel outdoor staircase with glass panels connecting pool terrace to rooftop. Built to withstand coastal conditions while maintaining architectural elegance.", ar: "سلم خارجي من الفولاذ المقاوم للصدأ البحري 316 مع ألواح زجاجية يربط تراس المسبح بالسطح. مبني لتحمل الظروف الساحلية مع الحفاظ على الأناقة المعمارية." },
   
   // Testimonials
   "testimonials.label": { en: "Client Stories", ar: "قصص العملاء" },
@@ -137,6 +147,24 @@ export const translations: Translations = {
   "footer.rights": { en: "All rights reserved.", ar: "جميع الحقوق محفوظة." },
   "footer.privacy": { en: "Privacy Policy", ar: "سياسة الخصوصية" },
   "footer.terms": { en: "Terms of Service", ar: "شروط الخدمة" },
+
+  // Map
+  "map.label": { en: "Our Location", ar: "موقعنا" },
+  "map.title": { en: "Visit Our Showroom", ar: "زر صالة العرض" },
+  "map.desc": { en: "Located in the heart of Al Quoz Industrial Area, Dubai. Visit us to see our craftsmanship up close.", ar: "يقع في قلب المنطقة الصناعية بالقوز، دبي. قم بزيارتنا لمشاهدة حرفيتنا عن قرب." },
+
+  // Booking
+  "booking.label": { en: "Book a Consultation", ar: "احجز استشارة" },
+  "booking.title": { en: "Schedule Your Free Consultation", ar: "حدد موعد استشارتك المجانية" },
+  "booking.desc": { en: "Pick a date and time that works for you. Our design team will walk you through materials, finishes, and design options.", ar: "اختر التاريخ والوقت المناسب لك. فريق التصميم لدينا سيرشدك عبر المواد والتشطيبات وخيارات التصميم." },
+  "booking.date": { en: "Select Date", ar: "اختر التاريخ" },
+  "booking.pickDate": { en: "Pick a date", ar: "اختر تاريخاً" },
+  "booking.time": { en: "Select Time", ar: "اختر الوقت" },
+  "booking.book": { en: "Confirm Booking", ar: "تأكيد الحجز" },
+  "booking.success": { en: "Booking confirmed! We'll see you soon.", ar: "تم تأكيد الحجز! سنراك قريباً." },
+  "booking.error": { en: "Failed to book. Please try again.", ar: "فشل الحجز. يرجى المحاولة مرة أخرى." },
+  "booking.confirmed": { en: "Booking Confirmed!", ar: "تم تأكيد الحجز!" },
+  "booking.confirmMsg": { en: "We'll send you a confirmation via WhatsApp. See you at our showroom!", ar: "سنرسل لك تأكيداً عبر واتساب. نراكم في صالة العرض!" },
 };
 
 interface LanguageContextType {
