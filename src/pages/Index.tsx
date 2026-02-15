@@ -6,13 +6,16 @@ import Hero from "@/components/Hero";
 // Lazy load below-the-fold components
 const Services = lazy(() => import("@/components/Services"));
 const WhyChooseUs = lazy(() => import("@/components/WhyChooseUs"));
-const Portfolio = lazy(() => import(/* webpackChunkName: "portfolio" */ "@/components/Portfolio"));
+const Portfolio = lazy(() => import("@/components/Portfolio"));
+const InstantQuoteCalc = lazy(() => import("@/components/InstantQuoteCalc"));
 const BookingWidget = lazy(() => import("@/components/BookingWidget"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const LocationMap = lazy(() => import("@/components/LocationMap"));
 const Contact = lazy(() => import("@/components/Contact"));
 const Footer = lazy(() => import("@/components/Footer"));
 const ChatWidget = lazy(() => import("@/components/ChatWidget"));
+const ExitIntentPopup = lazy(() => import("@/components/ExitIntentPopup"));
+const StickyLeadBar = lazy(() => import("@/components/StickyLeadBar"));
 
 const SectionFallback = () => (
   <div className="min-h-[200px] flex items-center justify-center">
@@ -37,6 +40,9 @@ const Index = () => {
             <Portfolio />
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
+            <InstantQuoteCalc />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
             <BookingWidget />
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
@@ -54,6 +60,12 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={null}>
           <ChatWidget />
+        </Suspense>
+        <Suspense fallback={null}>
+          <ExitIntentPopup />
+        </Suspense>
+        <Suspense fallback={null}>
+          <StickyLeadBar />
         </Suspense>
       </div>
     </LanguageProvider>
