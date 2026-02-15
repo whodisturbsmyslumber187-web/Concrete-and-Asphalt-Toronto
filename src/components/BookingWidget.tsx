@@ -25,16 +25,21 @@ const BookingWidget = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [projectType, setProjectType] = useState("");
+  const [budget, setBudget] = useState("");
+  const [timeline, setTimeline] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [numFloors, setNumFloors] = useState("");
+  const [materialPref, setMaterialPref] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBooked, setIsBooked] = useState(false);
 
   const handleBook = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !time || !name || !phone || !projectType) return;
+    if (!date || !time || !name || !phone || !projectType || !budget || !timeline) return;
 
     setIsSubmitting(true);
     try {
-      const details = `Callback Booking: ${format(date, "PPP")} at ${time}. Project: ${projectType}`;
+      const details = `Callback Booking: ${format(date, "PPP")} at ${time}. Project: ${projectType}. Budget: ${budget}. Timeline: ${timeline}. Property: ${propertyType}. Floors: ${numFloors}. Material: ${materialPref}`;
       
       const { error } = await supabase
         .from("contact_submissions")
@@ -44,20 +49,20 @@ const BookingWidget = () => {
           phone,
           project_type: projectType,
           details,
+          budget,
+          timeline,
+          property_type: propertyType,
+          num_floors: numFloors,
+          material_preference: materialPref,
+          lead_source: "booking_calendar",
         });
 
       if (error) throw error;
 
       // Also trigger notification
       await supabase.functions.invoke('send-notification', {
-        body: {
-          name,
-          email: email || "booking@apexstairs.ae",
-          phone,
-          project_type: projectType,
-          details,
-        },
-      }).catch(() => {}); // Don't fail if notification fails
+        body: { name, email: email || "booking@apexstairs.ae", phone, project_type: projectType, details },
+      }).catch(() => {});
 
       setIsBooked(true);
       toast.success(t("booking.success"));
@@ -146,6 +151,75 @@ const BookingWidget = () => {
                 <option value="hospitality">{t("contact.typeHospitality")}</option>
                 <option value="other">{t("contact.typeOther")}</option>
               </select>
+            </div>
+
+            {/* Budget */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">{t("booking.budget") || "Estimated Budget (AED)"}</label>
+              <select
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                required
+              >
+                <option value="">{t("booking.selectBudget") || "Select budget range"}</option>
+                <option value="under-25k">Under AED 25,000</option>
+                <option value="25k-50k">AED 25,000 – 50,000</option>
+                <option value="50k-100k">AED 50,000 – 100,000</option>
+                <option value="100k-200k">AED 100,000 – 200,000</option>
+                <option value="200k+">AED 200,000+</option>
+              </select>
+            </div>
+
+            {/* Timeline */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">{t("booking.timeline") || "When do you need it?"}</label>
+              <select
+                value={timeline}
+                onChange={(e) => setTimeline(e.target.value)}
+                className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                required
+              >
+                <option value="">{t("booking.selectTimeline") || "Select timeline"}</option>
+                <option value="urgent">{t("booking.urgent") || "ASAP / Urgent"}</option>
+                <option value="1-3months">{t("booking.1to3") || "1 – 3 Months"}</option>
+                <option value="3-6months">{t("booking.3to6") || "3 – 6 Months"}</option>
+                <option value="6months+">{t("booking.6plus") || "6+ Months"}</option>
+                <option value="planning">{t("booking.planning") || "Just Planning / Research"}</option>
+              </select>
+            </div>
+
+            {/* Property & Material (optional) */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm font-medium mb-2 block">{t("booking.floors") || "Number of Floors"}</label>
+                <select
+                  value={numFloors}
+                  onChange={(e) => setNumFloors(e.target.value)}
+                  className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                >
+                  <option value="">-</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4+">4+</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">{t("booking.material") || "Material Preference"}</label>
+                <select
+                  value={materialPref}
+                  onChange={(e) => setMaterialPref(e.target.value)}
+                  className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                >
+                  <option value="">-</option>
+                  <option value="steel">{t("booking.steel") || "Steel"}</option>
+                  <option value="glass">{t("booking.glass") || "Glass + Steel"}</option>
+                  <option value="wood">{t("booking.wood") || "Wood + Steel"}</option>
+                  <option value="marble">{t("booking.marble") || "Marble + Steel"}</option>
+                  <option value="other">{t("contact.typeOther")}</option>
+                </select>
+              </div>
             </div>
 
             {/* Date Picker */}

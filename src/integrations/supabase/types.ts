@@ -16,36 +16,54 @@ export type Database = {
     Tables: {
       contact_submissions: {
         Row: {
+          budget: string | null
           created_at: string
           details: string
           email: string
           id: string
+          lead_source: string | null
+          material_preference: string | null
           name: string
+          num_floors: string | null
           phone: string
           project_type: string
+          property_type: string | null
           status: string | null
+          timeline: string | null
           updated_at: string
         }
         Insert: {
+          budget?: string | null
           created_at?: string
           details: string
           email: string
           id?: string
+          lead_source?: string | null
+          material_preference?: string | null
           name: string
+          num_floors?: string | null
           phone: string
           project_type: string
+          property_type?: string | null
           status?: string | null
+          timeline?: string | null
           updated_at?: string
         }
         Update: {
+          budget?: string | null
           created_at?: string
           details?: string
           email?: string
           id?: string
+          lead_source?: string | null
+          material_preference?: string | null
           name?: string
+          num_floors?: string | null
           phone?: string
           project_type?: string
+          property_type?: string | null
           status?: string | null
+          timeline?: string | null
           updated_at?: string
         }
         Relationships: []
