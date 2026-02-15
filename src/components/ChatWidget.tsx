@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -190,7 +191,9 @@ const ChatWidget = () => {
                         : "bg-secondary text-foreground"
                     }`}
                   >
-                    {msg.content}
+                    <div className="prose prose-sm max-w-none [&_p]:m-0 [&_ul]:my-1 [&_li]:my-0">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               ))}
