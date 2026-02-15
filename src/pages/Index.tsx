@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 // Lazy load below-the-fold components
 const Services = lazy(() => import("@/components/Services"));
 const WhyChooseUs = lazy(() => import("@/components/WhyChooseUs"));
-const Portfolio = lazy(() => import("@/components/Portfolio"));
+const Portfolio = lazy(() => import(/* webpackChunkName: "portfolio" */ "@/components/Portfolio"));
 const BookingWidget = lazy(() => import("@/components/BookingWidget"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const LocationMap = lazy(() => import("@/components/LocationMap"));
