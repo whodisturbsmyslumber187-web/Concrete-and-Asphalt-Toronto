@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format } from "date-fns";
-import { CalendarIcon, Clock, CheckCircle } from "lucide-react";
+import { CalendarIcon, Clock, CheckCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -24,26 +24,40 @@ const BookingWidget = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [projectType, setProjectType] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBooked, setIsBooked] = useState(false);
 
   const handleBook = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !time || !name || !phone) return;
+    if (!date || !time || !name || !phone || !projectType) return;
 
     setIsSubmitting(true);
     try {
+      const details = `Callback Booking: ${format(date, "PPP")} at ${time}. Project: ${projectType}`;
+      
       const { error } = await supabase
         .from("contact_submissions")
         .insert({
           name,
           email: email || "booking@apexstairs.ae",
           phone,
-          project_type: "consultation",
-          details: `Booking: ${format(date, "PPP")} at ${time}`,
+          project_type: projectType,
+          details,
         });
 
       if (error) throw error;
+
+      // Also trigger notification
+      await supabase.functions.invoke('send-notification', {
+        body: {
+          name,
+          email: email || "booking@apexstairs.ae",
+          phone,
+          project_type: projectType,
+          details,
+        },
+      }).catch(() => {}); // Don't fail if notification fails
 
       setIsBooked(true);
       toast.success(t("booking.success"));
@@ -54,7 +68,6 @@ const BookingWidget = () => {
     }
   };
 
-  // Disable past dates and weekends (Fri/Sat)
   const disabledDays = (day: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -71,6 +84,21 @@ const BookingWidget = () => {
             {format(date!, "PPP")} at {time}
           </p>
           <p className="text-muted-foreground mt-2">{t("booking.confirmMsg")}</p>
+          <Button
+            variant="gold"
+            className="mt-6"
+            onClick={() => {
+              setIsBooked(false);
+              setDate(undefined);
+              setTime("");
+              setName("");
+              setPhone("");
+              setEmail("");
+              setProjectType("");
+            }}
+          >
+            {t("booking.another") || "Book Another"}
+          </Button>
         </div>
       </section>
     );
@@ -95,6 +123,31 @@ const BookingWidget = () => {
 
         <ScrollReveal delay={0.2}>
           <form onSubmit={handleBook} className="max-w-lg mx-auto bg-card p-8 rounded-sm shadow-medium space-y-5">
+            {/* Callback indicator */}
+            <div className="flex items-center gap-3 p-3 bg-secondary rounded-sm">
+              <Phone className="w-5 h-5 text-gold flex-shrink-0" />
+              <p className="text-sm text-muted-foreground">
+                {t("booking.callbackNote") || "We'll call you back at your selected time to discuss your project."}
+              </p>
+            </div>
+
+            {/* Project Type */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">{t("contact.projectType")}</label>
+              <select
+                value={projectType}
+                onChange={(e) => setProjectType(e.target.value)}
+                className="w-full h-10 px-3 rounded-sm bg-background border border-border text-sm focus:outline-none focus:border-gold"
+                required
+              >
+                <option value="">{t("contact.selectType")}</option>
+                <option value="residential">{t("contact.typeResidential")}</option>
+                <option value="commercial">{t("contact.typeCommercial")}</option>
+                <option value="hospitality">{t("contact.typeHospitality")}</option>
+                <option value="other">{t("contact.typeOther")}</option>
+              </select>
+            </div>
+
             {/* Date Picker */}
             <div>
               <label className="text-sm font-medium mb-2 block">{t("booking.date")}</label>
