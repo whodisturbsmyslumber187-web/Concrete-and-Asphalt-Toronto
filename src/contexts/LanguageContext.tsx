@@ -165,6 +165,35 @@ export const translations: Translations = {
   "booking.error": { en: "Failed to book. Please try again.", ar: "فشل الحجز. يرجى المحاولة مرة أخرى." },
   "booking.confirmed": { en: "Booking Confirmed!", ar: "تم تأكيد الحجز!" },
   "booking.confirmMsg": { en: "We'll send you a confirmation via WhatsApp. See you at our showroom!", ar: "سنرسل لك تأكيداً عبر واتساب. نراكم في صالة العرض!" },
+
+  // Instant Quote Calculator
+  "quote.label": { en: "Instant Estimate", ar: "تقدير فوري" },
+  "quote.title": { en: "Get Your Price Estimate in 60 Seconds", ar: "احصل على تقدير السعر في 60 ثانية" },
+  "quote.desc": { en: "Answer a few quick questions and get an instant ballpark estimate. No commitment required.", ar: "أجب على بعض الأسئلة السريعة واحصل على تقدير فوري. لا التزام مطلوب." },
+  "quote.step1": { en: "What type of staircase or railing?", ar: "ما نوع السلم أو الدرابزين؟" },
+  "quote.step2": { en: "Preferred material finish?", ar: "التشطيب المفضل للمواد؟" },
+  "quote.step3": { en: "How many floors?", ar: "كم عدد الطوابق؟" },
+  "quote.step4": { en: "What's your project timeline?", ar: "ما هو الجدول الزمني لمشروعك؟" },
+  "quote.step5": { en: "What type of property?", ar: "ما نوع العقار؟" },
+  "quote.step6": { en: "What's your approximate budget?", ar: "ما هي ميزانيتك التقريبية؟" },
+  "quote.estimate": { en: "Your Estimated Range", ar: "النطاق التقديري" },
+  "quote.disclaimer": { en: "Final price depends on site conditions & customization", ar: "السعر النهائي يعتمد على ظروف الموقع والتخصيص" },
+  "quote.contactPrompt": { en: "Enter your details to receive a detailed quote from our team:", ar: "أدخل بياناتك لتلقي عرض سعر مفصل من فريقنا:" },
+  "quote.getQuote": { en: "Get My Detailed Quote", ar: "احصل على عرض السعر المفصل" },
+  "quote.thanks": { en: "Quote Request Received!", ar: "تم استلام طلب العرض!" },
+  "quote.thanksMsg": { en: "Our team will review your requirements and send a detailed quote within 24 hours.", ar: "سيراجع فريقنا متطلباتك ويرسل عرض سعر مفصل خلال 24 ساعة." },
+
+  // Exit Intent Popup
+  "exit.title": { en: "Wait! Don't Leave Empty-Handed", ar: "انتظر! لا تغادر خالي الوفاض" },
+  "exit.desc": { en: "Get a FREE design consultation + 3D render of your dream staircase. No obligation, just expert advice.", ar: "احصل على استشارة تصميم مجانية + تصميم ثلاثي الأبعاد لسلم أحلامك. بدون التزام، مجرد نصيحة خبراء." },
+  "exit.cta": { en: "Claim My Free Consultation", ar: "احصل على استشارتي المجانية" },
+  "exit.thanks": { en: "Thank You!", ar: "شكراً لك!" },
+  "exit.thanksMsg": { en: "We'll call you within 24 hours with your free consultation.", ar: "سنتصل بك خلال 24 ساعة لاستشارتك المجانية." },
+
+  // Sticky Lead Bar
+  "sticky.text": { en: "Want a free quote? Drop your number:", ar: "تريد عرض سعر مجاني؟ أدخل رقمك:" },
+  "sticky.cta": { en: "Call Me Back", ar: "اتصلوا بي" },
+  "sticky.success": { en: "We'll call you back shortly!", ar: "سنتصل بك قريباً!" },
 };
 
 interface LanguageContextType {
