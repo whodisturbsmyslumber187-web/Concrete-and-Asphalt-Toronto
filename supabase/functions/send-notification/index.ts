@@ -150,18 +150,59 @@ serve(async (req) => {
       details_length: submission.details.length,
     });
 
-    // Get WhatsApp number from secrets
+    // --- Email via Resend (if configured) ---
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    const ownerEmail = Deno.env.get("OWNER_EMAIL") || "p8tty@msn.com";
+    let emailSent = false;
+
+    if (resendKey) {
+      try {
+        const emailRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${resendKey}`,
+          },
+          body: JSON.stringify({
+            from: "Apex Stairs <onboarding@resend.dev>",
+            to: [ownerEmail],
+            subject: `🔔 New Lead: ${submission.name} — ${submission.project_type}`,
+            html: `
+              <h2>New Lead Submission</h2>
+              <table style="border-collapse:collapse;width:100%;max-width:500px;">
+                <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${submission.name}</td></tr>
+                <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;">${submission.email}</td></tr>
+                <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;">${submission.phone}</td></tr>
+                <tr><td style="padding:8px;font-weight:bold;">Project</td><td style="padding:8px;">${submission.project_type}</td></tr>
+                <tr><td style="padding:8px;font-weight:bold;">Details</td><td style="padding:8px;">${submission.details}</td></tr>
+              </table>
+            `,
+          }),
+        });
+        const emailResult = await emailRes.json();
+        emailSent = emailRes.ok;
+        console.log("Resend result:", emailResult);
+      } catch (emailErr) {
+        console.error("Resend email error:", emailErr);
+      }
+    } else {
+      console.log("RESEND_API_KEY not configured — skipping email");
+    }
+
+    // --- WhatsApp deep link ---
     const whatsappNumber = Deno.env.get("WHATSAPP_NUMBER") || "+971412345678";
-    
-    // Log notification details (in production, integrate with email service like Resend)
-    console.log(`📧 Email notification would be sent to business owner`);
-    console.log(`📱 WhatsApp notification available at: https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`);
+    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, "");
+    const waText = encodeURIComponent(
+      `New inquiry from ${submission.name}\nPhone: ${submission.phone}\nProject: ${submission.project_type}\n${submission.details.substring(0, 200)}`
+    );
+    const whatsappLink = `https://wa.me/${cleanNumber}?text=${waText}`;
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: "Notification processed",
-        whatsappLink: `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`New inquiry from ${submission.name}: ${submission.details.substring(0, 100)}`)}`
+        emailSent,
+        whatsappLink,
       }),
       { 
         status: 200, 
