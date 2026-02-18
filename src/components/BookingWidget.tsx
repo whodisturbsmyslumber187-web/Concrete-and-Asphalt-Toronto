@@ -37,11 +37,11 @@ const BookingWidget = () => {
 
   const handleBook = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !time || !name || !phone || !projectType || !budget || !timeline) return;
+    if (!date || !name || !phone || !projectType || !budget || !timeline) return;
 
     setIsSubmitting(true);
     try {
-      const details = `Private Consultation: ${format(date, "PPP")} at ${time}. Project: ${projectType}. Investment: ${budget}. Timeline: ${timeline}. Property: ${propertyType}. Floors: ${numFloors}. Material: ${materialPref}`;
+      const details = `Private Consultation: ${format(date, "PPP")}${time ? ` at ${time}` : ""}. Project: ${projectType}. Investment: ${budget}. Timeline: ${timeline}. Property: ${propertyType}. Floors: ${numFloors}. Material: ${materialPref}`;
 
       const { error } = await supabase.from("contact_submissions").insert({
         name,
@@ -196,10 +196,10 @@ const BookingWidget = () => {
                 required
                 placeholder={t("booking.selectBudget")}
               >
-                <option value="50k-100k">AED 50,000 – 100,000</option>
-                <option value="100k-200k">AED 100,000 – 200,000</option>
-                <option value="200k-500k">AED 200,000 – 500,000</option>
-                <option value="500k+">AED 500,000+</option>
+                <option value="under-75k">Under AED 75,000</option>
+                <option value="75k-250k">AED 75,000 – 250,000</option>
+                <option value="250k-750k">AED 250,000 – 750,000</option>
+                <option value="750k+">AED 750,000+</option>
               </SelectField>
 
               <SelectField
@@ -307,8 +307,8 @@ const BookingWidget = () => {
               </div>
             )}
 
-            {/* Contact Info */}
-            {time && (
+            {/* Contact Info — shown after date is picked */}
+            {date && (
               <div className="space-y-4 pt-2">
                 <div className="border-t border-border/30 pb-2" />
                 <div>

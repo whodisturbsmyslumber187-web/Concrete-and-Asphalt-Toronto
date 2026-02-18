@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calculator, ArrowRight, CheckCircle } from "lucide-react";
+import { Phone, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -47,10 +47,10 @@ const PROPERTY_TYPES = [
 ];
 
 const BUDGETS = [
-  { id: "under-20k", label: "Under AED 20,000", labelAr: "أقل من 20,000 درهم" },
-  { id: "20k-50k", label: "AED 20,000 – 50,000", labelAr: "20,000 – 50,000 درهم" },
-  { id: "50k-100k", label: "AED 50,000 – 100,000", labelAr: "50,000 – 100,000 درهم" },
-  { id: "100k-plus", label: "AED 100,000+", labelAr: "100,000 درهم+" },
+  { id: "under-75k", label: "Under AED 75,000", labelAr: "أقل من 75,000 درهم" },
+  { id: "75k-250k", label: "AED 75,000 – 250,000", labelAr: "75,000 – 250,000 درهم" },
+  { id: "250k-750k", label: "AED 250,000 – 750,000", labelAr: "250,000 – 750,000 درهم" },
+  { id: "750k-plus", label: "AED 750,000+", labelAr: "750,000 درهم+" },
 ];
 
 const TOTAL_STEPS = 7;
@@ -73,27 +73,19 @@ const InstantQuoteCalc = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const selectedType = STAIRCASE_TYPES.find((t) => t.id === type);
-  const selectedMaterial = MATERIALS.find((m) => m.id === material);
-  const floorMultiplier = floors === "4+" ? 4 : parseInt(floors) || 1;
-
-  const estimateMin = selectedType && selectedMaterial
-    ? Math.round(selectedType.basePrice * selectedMaterial.multiplier * floorMultiplier * 0.85)
-    : 0;
-  const estimateMax = selectedType && selectedMaterial
-    ? Math.round(selectedType.basePrice * selectedMaterial.multiplier * floorMultiplier * 1.25)
-    : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone) return;
     setIsSubmitting(true);
     try {
+      const details = `Callback Request: ${selectedType?.label || type}, ${material}, ${floors} floor(s), ${timeline} timeline, ${propertyType} property, budget: ${budget}`;
       await supabase.from("contact_submissions").insert({
         name,
         phone,
         email: email || "quote-calc@apexstairs.ae",
         project_type: type,
-        details: `Instant Quote: ${type}, ${material}, ${floors} floor(s), ${timeline} timeline, ${propertyType} property, budget: ${budget}. Estimate: AED ${estimateMin.toLocaleString()} - ${estimateMax.toLocaleString()}`,
+        details,
         budget,
         num_floors: floors,
         material_preference: material,
@@ -101,6 +93,11 @@ const InstantQuoteCalc = () => {
         property_type: propertyType,
         lead_source: "quote_calculator",
       });
+
+      // Also trigger notification to owner
+      await supabase.functions.invoke("send-notification", {
+        body: { name, email: email || "", phone, project_type: type, details },
+      }).catch(() => {});
       setSubmitted(true);
       toast.success(t("contact.success"));
     } catch {
@@ -136,9 +133,6 @@ const InstantQuoteCalc = () => {
           <CheckCircle className="w-16 h-16 text-gold mx-auto mb-4" />
           <h2 className="font-heading text-2xl mb-2">{t("quote.thanks")}</h2>
           <p className="text-muted-foreground">{t("quote.thanksMsg")}</p>
-          <p className="text-gold font-heading text-xl mt-4">
-            AED {estimateMin.toLocaleString()} – {estimateMax.toLocaleString()}
-          </p>
         </div>
       </section>
     );
@@ -285,19 +279,13 @@ const InstantQuoteCalc = () => {
               </div>
             )}
 
-            {/* Step 7: Contact + Estimate */}
+            {/* Step 7: Contact Info */}
             {step === 7 && (
               <div>
-                <div className="bg-secondary p-5 rounded-sm mb-6 text-center">
-                  <Calculator className="w-6 h-6 text-gold mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground mb-1">{t("quote.estimate")}</p>
-                  <p className="font-heading text-2xl text-gold">
-                    AED {estimateMin.toLocaleString()} – {estimateMax.toLocaleString()}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">{t("quote.disclaimer")}</p>
+                <div className="flex items-center gap-3 p-4 bg-gold/5 border border-gold/10 rounded-sm mb-6">
+                  <Phone className="w-5 h-5 text-gold flex-shrink-0" />
+                  <p className="text-sm text-foreground/80">{t("quote.contactPrompt")}</p>
                 </div>
-
-                <p className="text-sm text-muted-foreground mb-4">{t("quote.contactPrompt")}</p>
 
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("contact.namePlaceholder")} required />

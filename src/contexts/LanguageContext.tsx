@@ -185,21 +185,19 @@ export const translations: Translations = {
   "booking.wroughtIron": { en: "Wrought Iron", ar: "حديد مشغول" },
 
   // Instant Quote Calculator
-  "quote.label": { en: "Instant Estimate", ar: "تقدير فوري" },
-  "quote.title": { en: "Get Your Price Estimate in 60 Seconds", ar: "احصل على تقدير السعر في 60 ثانية" },
-  "quote.desc": { en: "Answer a few quick questions and get an instant ballpark estimate. No commitment required.", ar: "أجب على بعض الأسئلة السريعة واحصل على تقدير فوري. لا التزام مطلوب." },
+  "quote.label": { en: "Get a Callback", ar: "احصل على اتصال" },
+  "quote.title": { en: "Tell Us About Your Project", ar: "أخبرنا عن مشروعك" },
+  "quote.desc": { en: "Answer a few quick questions so our expert team can prepare a tailored proposal and call you back.", ar: "أجب على بعض الأسئلة السريعة حتى يتمكن فريقنا من إعداد عرض مخصص والاتصال بك." },
   "quote.step1": { en: "What type of staircase or railing?", ar: "ما نوع السلم أو الدرابزين؟" },
   "quote.step2": { en: "Preferred material finish?", ar: "التشطيب المفضل للمواد؟" },
   "quote.step3": { en: "How many floors?", ar: "كم عدد الطوابق؟" },
   "quote.step4": { en: "What's your project timeline?", ar: "ما هو الجدول الزمني لمشروعك؟" },
   "quote.step5": { en: "What type of property?", ar: "ما نوع العقار؟" },
   "quote.step6": { en: "What's your approximate budget?", ar: "ما هي ميزانيتك التقريبية؟" },
-  "quote.estimate": { en: "Your Estimated Range", ar: "النطاق التقديري" },
-  "quote.disclaimer": { en: "Final price depends on site conditions & customization", ar: "السعر النهائي يعتمد على ظروف الموقع والتخصيص" },
-  "quote.contactPrompt": { en: "Enter your details to receive a detailed quote from our team:", ar: "أدخل بياناتك لتلقي عرض سعر مفصل من فريقنا:" },
-  "quote.getQuote": { en: "Get My Detailed Quote", ar: "احصل على عرض السعر المفصل" },
-  "quote.thanks": { en: "Quote Request Received!", ar: "تم استلام طلب العرض!" },
-  "quote.thanksMsg": { en: "Our team will review your requirements and send a detailed quote within 24 hours.", ar: "سيراجع فريقنا متطلباتك ويرسل عرض سعر مفصل خلال 24 ساعة." },
+  "quote.contactPrompt": { en: "Leave your details and our senior consultant will call you within 2 hours:", ar: "اترك بياناتك وسيتصل بك كبير مستشارينا خلال ساعتين:" },
+  "quote.getQuote": { en: "Request My Callback", ar: "اطلب اتصالاً" },
+  "quote.thanks": { en: "Request Received!", ar: "تم استلام الطلب!" },
+  "quote.thanksMsg": { en: "Our senior consultant will call you within 2 hours to discuss your project in detail.", ar: "سيتصل بك كبير مستشارينا خلال ساعتين لمناقشة مشروعك بالتفصيل." },
 
   // Exit Intent Popup
   "exit.title": { en: "Wait! Don't Leave Empty-Handed", ar: "انتظر! لا تغادر خالي الوفاض" },
