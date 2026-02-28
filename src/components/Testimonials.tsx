@@ -4,30 +4,30 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Al-Maktoum",
-      role: "Interior Designer, Al-Maktoum Interiors",
+      name: "Michael & Sarah Chen",
+      role: "Homeowners",
       quote:
-        "Apex Stairs delivered beyond our expectations. The spiral staircase they crafted for our Emirates Hills project became the defining feature of the entire villa. Impeccable craftsmanship.",
+        "Apex Paving completely transformed our crumbling driveway. The stamped concrete looks incredible and the crew was professional from day one. Neighbours keep asking who did the work!",
       rating: 5,
-      location: "Emirates Hills",
+      location: "Oakville, ON",
     },
     {
       id: 2,
-      name: "James Morrison",
-      role: "Project Director, Morrison Development",
+      name: "David Thompson",
+      role: "Property Manager, GTA Commercial Properties",
       quote:
-        "Working with Apex on our DIFC tower was seamless. Their ability to handle complex structural requirements while maintaining aesthetic excellence is unmatched in the region.",
+        "We've used Apex for three parking lot repaving projects now. They work fast, stay on budget, and their asphalt quality is the best we've seen. Our tenants are always impressed.",
       rating: 5,
-      location: "DIFC, Dubai",
+      location: "Mississauga, ON",
     },
     {
       id: 3,
-      name: "Fatima Hassan",
+      name: "Jennifer Kowalski",
       role: "Homeowner",
       quote:
-        "From the initial consultation to the final installation, the team was professional and attentive. Our glass railing transformed our living space entirely. Worth every dirham.",
+        "From the free estimate to the final seal coat, everything was seamless. Our new patio and walkway survived their first Ontario winter without a single crack. Worth every penny.",
       rating: 5,
-      location: "Palm Jumeirah",
+      location: "Richmond Hill, ON",
     },
   ];
 
@@ -40,7 +40,7 @@ const Testimonials = () => {
             Client Stories
           </span>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl lg:text-6xl mt-3 md:mt-4 text-primary-foreground">
-            Trusted by Dubai's Finest
+            Trusted Across the GTA
           </h2>
         </div>
 

@@ -23,8 +23,8 @@ const LocationMap = () => {
         <ScrollReveal delay={0.2}>
           <div className="rounded-sm overflow-hidden shadow-luxury border border-border">
             <iframe
-              title="Apex Stairs & Railings Location - Al Quoz, Dubai"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.168!2d55.2368!3d25.1545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6bebd39e1a5d%3A0x2e6c6e2af1bfb1e!2sAl%20Quoz%20Industrial%20Area%2013%2C%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
+              title="Apex Paving & Concrete Location - Toronto, Ontario"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d92452.56067785655!2d-79.45169635!3d43.6532261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
               width="100%"
               height="450"
               style={{ border: 0 }}

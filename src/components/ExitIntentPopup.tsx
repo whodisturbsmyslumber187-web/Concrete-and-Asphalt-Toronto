@@ -19,7 +19,6 @@ const ExitIntentPopup = () => {
 
   useEffect(() => {
     if (dismissed) return;
-    // Check if already shown this session
     if (sessionStorage.getItem("exitPopupShown")) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -29,7 +28,6 @@ const ExitIntentPopup = () => {
       }
     };
 
-    // Also show after 45 seconds of inactivity on mobile
     const timer = setTimeout(() => {
       if (!sessionStorage.getItem("exitPopupShown")) {
         setShow(true);
@@ -52,9 +50,9 @@ const ExitIntentPopup = () => {
       await supabase.from("contact_submissions").insert({
         name,
         phone,
-        email: email || "exit-popup@apexstairs.ae",
+        email: email || "exit-popup@apexpaving.ca",
         project_type: "consultation",
-        details: "Exit intent popup - Free consultation offer",
+        details: "Exit intent popup - Free estimate offer",
         lead_source: "exit_popup",
       });
       setSubmitted(true);
@@ -95,8 +93,8 @@ const ExitIntentPopup = () => {
             {submitted ? (
               <div className="text-center py-4">
                 <Gift className="w-12 h-12 text-gold mx-auto mb-3" />
-                <h3 className="font-heading text-xl mb-2">{t("exit.thanks") || "Thank You!"}</h3>
-                <p className="text-muted-foreground text-sm">{t("exit.thanksMsg") || "We'll call you within 24 hours with your free consultation."}</p>
+                <h3 className="font-heading text-xl mb-2">{t("exit.thanks")}</h3>
+                <p className="text-muted-foreground text-sm">{t("exit.thanksMsg")}</p>
               </div>
             ) : (
               <>
@@ -104,17 +102,15 @@ const ExitIntentPopup = () => {
                   <div className="w-14 h-14 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Gift className="w-7 h-7 text-gold" />
                   </div>
-                  <h3 className="font-heading text-2xl mb-2">{t("exit.title") || "Wait! Don't Leave Empty-Handed"}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {t("exit.desc") || "Get a FREE design consultation + 3D render of your dream staircase. No obligation, just expert advice."}
-                  </p>
+                  <h3 className="font-heading text-2xl mb-2">{t("exit.title")}</h3>
+                  <p className="text-muted-foreground text-sm">{t("exit.desc")}</p>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("contact.namePlaceholder")} required />
                   <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={t("contact.phonePlaceholder")} required />
                   <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("contact.emailPlaceholder")} />
                   <Button type="submit" variant="gold" size="lg" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? t("contact.sending") : (t("exit.cta") || "Claim My Free Consultation")}
+                    {isSubmitting ? t("contact.sending") : t("exit.cta")}
                   </Button>
                 </form>
               </>

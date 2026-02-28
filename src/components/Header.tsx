@@ -47,7 +47,7 @@ const Header = () => {
           <span className={`font-heading text-2xl md:text-3xl font-semibold ${
             isScrolled ? "text-foreground" : "text-ivory"
           }`}>
-            Apex<span className="text-gradient-gold">Stairs</span>
+            Apex<span className="text-gradient-gold">Paving</span>
           </span>
         </a>
 
@@ -72,7 +72,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           <LanguageSwitcher />
           <a
-            href="tel:+97141234567"
+            href="tel:+14165551234"
             className={`flex items-center gap-2 text-sm font-medium transition-colors ${
               isScrolled
                 ? "text-muted-foreground hover:text-gold"
@@ -80,7 +80,7 @@ const Header = () => {
             }`}
           >
             <Phone className="w-4 h-4" />
-            +971 4 123 4567
+            (416) 555-1234
           </a>
           <Button variant="gold" size="lg" onClick={scrollToContact}>
             {t("header.getQuote")}
@@ -118,11 +118,11 @@ const Header = () => {
             ))}
             <div className="pt-4 border-t border-border">
               <a
-                href="tel:+97141234567"
+                href="tel:+14165551234"
                 className="flex items-center gap-2 text-muted-foreground mb-4"
               >
                 <Phone className="w-4 h-4" />
-                +971 4 123 4567
+                (416) 555-1234
               </a>
               <Button variant="gold" size="lg" className="w-full" onClick={scrollToContact}>
                 {t("header.getQuote")}

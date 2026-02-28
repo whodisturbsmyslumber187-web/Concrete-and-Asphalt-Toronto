@@ -9,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ScrollReveal from "./ScrollReveal";
 
-// Lazy load hCaptcha to reduce initial bundle size
 const HCaptcha = lazy(() => import("@hcaptcha/react-hcaptcha"));
 
 const Contact = () => {
@@ -21,7 +20,6 @@ const Contact = () => {
   const isInView = useInView(captchaContainerRef, { once: true, margin: "200px" });
   const [shouldLoadCaptcha, setShouldLoadCaptcha] = useState(false);
 
-  // Only load captcha when form is visible or user starts interacting
   useEffect(() => {
     if (isInView) {
       setShouldLoadCaptcha(true);
@@ -43,19 +41,19 @@ const Contact = () => {
     {
       icon: MapPin,
       label: t("contact.visit"),
-      value: "Industrial Area 13, Al Quoz\nDubai, UAE",
+      value: "123 Industrial Parkway\nToronto, ON M6N 1A1",
     },
     {
       icon: Phone,
       label: t("contact.call"),
-      value: "+971 4 123 4567",
-      href: "tel:+97141234567",
+      value: "(416) 555-1234",
+      href: "tel:+14165551234",
     },
     {
       icon: Mail,
       label: t("contact.email"),
-      value: "info@apexstairs.ae",
-      href: "mailto:info@apexstairs.ae",
+      value: "info@apexpaving.ca",
+      href: "mailto:info@apexpaving.ca",
     },
     {
       icon: Clock,
@@ -77,7 +75,6 @@ const Contact = () => {
     setCaptchaToken(null);
   };
 
-  // Get hCaptcha sitekey from environment or use test key for development only
   const hcaptchaSitekey = import.meta.env.VITE_HCAPTCHA_SITEKEY || "10000000-ffff-ffff-ffff-000000000001";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +89,6 @@ const Contact = () => {
     setSubmitStatus("idle");
 
     try {
-      // Insert into Supabase database
       const { error } = await supabase
         .from('contact_submissions')
         .insert({
@@ -105,7 +101,6 @@ const Contact = () => {
 
       if (error) throw error;
       
-      // Send notification with CAPTCHA token for backend verification
       const { error: notificationError } = await supabase.functions.invoke('send-notification', {
         body: {
           name: formData.name,
@@ -121,13 +116,11 @@ const Contact = () => {
 
       if (notificationError) {
         console.error("Notification error:", notificationError);
-        // Don't throw - form was still submitted to database
       }
       
       setSubmitStatus("success");
       toast.success(t("contact.success"));
       
-      // Reset form
       setFormData({
         name: "",
         phone: "",
@@ -163,7 +156,6 @@ const Contact = () => {
                 {t("contact.desc")}
               </p>
 
-              {/* Contact Details */}
               <div className="grid sm:grid-cols-2 gap-6">
                 {contactInfo.map((item, index) => (
                   <ScrollReveal key={item.label} delay={0.1 * index}>
@@ -283,7 +275,6 @@ const Contact = () => {
                     />
                   </div>
                   
-                  {/* hCaptcha - lazy loaded only when visible */}
                   <div ref={captchaContainerRef} className="flex justify-center min-h-[78px]">
                     {shouldLoadCaptcha ? (
                       <Suspense fallback={
@@ -320,7 +311,7 @@ const Contact = () => {
                     ) : (
                       <>
                         {t("contact.submit")}
-                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </>
                     )}
                   </Button>

@@ -18,7 +18,6 @@ const StickyLeadBar = () => {
   useEffect(() => {
     if (dismissed || submitted) return;
     const handleScroll = () => {
-      // Show after scrolling 40% of page
       const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
       setVisible(scrollPercent > 0.4);
     };
@@ -34,13 +33,13 @@ const StickyLeadBar = () => {
       await supabase.from("contact_submissions").insert({
         name: "Quick Lead",
         phone: phone.trim(),
-        email: "sticky-bar@apexstairs.ae",
+        email: "sticky-bar@apexpaving.ca",
         project_type: "consultation",
         details: "Sticky bar quick callback request",
         lead_source: "sticky_bar",
       });
       setSubmitted(true);
-      toast.success(t("sticky.success") || "We'll call you back shortly!");
+      toast.success(t("sticky.success"));
     } catch {
       toast.error(t("contact.error"));
     } finally {
@@ -62,18 +61,18 @@ const StickyLeadBar = () => {
           <div className="container-narrow py-3 flex items-center gap-3 justify-center flex-wrap">
             <Phone className="w-5 h-5 text-gold flex-shrink-0" />
             <span className="text-primary-foreground text-sm font-medium">
-              {t("sticky.text") || "Want a free quote? Drop your number:"}
+              {t("sticky.text")}
             </span>
             <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+971 XX XXX XXXX"
+                placeholder="(416) XXX-XXXX"
                 className="w-44 h-9 text-sm bg-background"
                 required
               />
               <Button type="submit" variant="gold" size="sm" disabled={isSubmitting}>
-                {isSubmitting ? "..." : (t("sticky.cta") || "Call Me Back")}
+                {isSubmitting ? "..." : t("sticky.cta")}
               </Button>
             </form>
             <button onClick={() => setDismissed(true)} className="text-primary-foreground/50 hover:text-primary-foreground ml-2">
