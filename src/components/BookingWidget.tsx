@@ -12,14 +12,14 @@ import { cn } from "@/lib/utils";
 import ScrollReveal from "./ScrollReveal";
 
 const TIME_SLOTS = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30",
-  "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
+  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+  "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
+  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
 ];
 
 const BookingWidget = () => {
   const { t, language } = useLanguage();
-  const isAr = language === "ar";
+  const isFr = language === "fr";
 
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState("");
@@ -41,11 +41,11 @@ const BookingWidget = () => {
 
     setIsSubmitting(true);
     try {
-      const details = `Private Consultation: ${format(date, "PPP")}${time ? ` at ${time}` : ""}. Project: ${projectType}. Investment: ${budget}. Timeline: ${timeline}. Property: ${propertyType}. Floors: ${numFloors}. Material: ${materialPref}`;
+      const details = `Site Visit: ${format(date, "PPP")}${time ? ` at ${time}` : ""}. Project: ${projectType}. Budget: ${budget}. Timeline: ${timeline}. Property: ${propertyType}. Area: ${numFloors}. Material: ${materialPref}`;
 
       const { error } = await supabase.from("contact_submissions").insert({
         name,
-        email: email || "booking@apexstairs.ae",
+        email: email || "booking@apexpaving.ca",
         phone,
         project_type: projectType,
         details,
@@ -60,7 +60,7 @@ const BookingWidget = () => {
       if (error) throw error;
 
       await supabase.functions.invoke("send-notification", {
-        body: { name, email: email || "booking@apexstairs.ae", phone, project_type: projectType, details },
+        body: { name, email: email || "booking@apexpaving.ca", phone, project_type: projectType, details },
       }).catch(() => {});
 
       setIsBooked(true);
@@ -75,28 +75,16 @@ const BookingWidget = () => {
   const disabledDays = (day: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return day < today || day.getDay() === 5 || day.getDay() === 6;
+    return day < today || day.getDay() === 0; // Closed Sundays
   };
 
   const SelectField = ({
-    label,
-    value,
-    onChange,
-    required,
-    placeholder,
-    children,
+    label, value, onChange, required, placeholder, children,
   }: {
-    label: string;
-    value: string;
-    onChange: (v: string) => void;
-    required?: boolean;
-    placeholder: string;
-    children: React.ReactNode;
+    label: string; value: string; onChange: (v: string) => void; required?: boolean; placeholder: string; children: React.ReactNode;
   }) => (
     <div>
-      <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">
-        {label}
-      </label>
+      <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -135,7 +123,7 @@ const BookingWidget = () => {
                 setTimeline("");
               }}
             >
-              {isAr ? "حجز آخر" : "Book Another Consultation"}
+              {isFr ? "Réserver une autre visite" : "Book Another Visit"}
             </Button>
           </div>
         </div>
@@ -165,15 +153,11 @@ const BookingWidget = () => {
             onSubmit={handleBook}
             className="max-w-lg mx-auto bg-card p-8 md:p-10 rounded-sm shadow-luxury border border-gold/5 space-y-6"
           >
-            {/* Executive callback badge */}
             <div className="flex items-center gap-3 p-4 bg-gold/5 border border-gold/10 rounded-sm">
               <Gem className="w-5 h-5 text-gold flex-shrink-0" />
-              <p className="text-sm text-foreground/80">
-                {t("booking.callbackNote")}
-              </p>
+              <p className="text-sm text-foreground/80">{t("booking.callbackNote")}</p>
             </div>
 
-            {/* Project Type */}
             <SelectField
               label={t("contact.projectType")}
               value={projectType}
@@ -187,7 +171,6 @@ const BookingWidget = () => {
               <option value="other">{t("contact.typeOther")}</option>
             </SelectField>
 
-            {/* Investment Range & Timeline */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <SelectField
                 label={t("booking.budget")}
@@ -196,10 +179,10 @@ const BookingWidget = () => {
                 required
                 placeholder={t("booking.selectBudget")}
               >
-                <option value="under-75k">Under AED 75,000</option>
-                <option value="75k-250k">AED 75,000 – 250,000</option>
-                <option value="250k-750k">AED 250,000 – 750,000</option>
-                <option value="750k+">AED 750,000+</option>
+                <option value="under-5k">Under $5,000</option>
+                <option value="5k-15k">$5,000 – $15,000</option>
+                <option value="15k-50k">$15,000 – $50,000</option>
+                <option value="50k+">$50,000+</option>
               </SelectField>
 
               <SelectField
@@ -217,7 +200,6 @@ const BookingWidget = () => {
               </SelectField>
             </div>
 
-            {/* Floors & Material */}
             <div className="grid grid-cols-2 gap-4">
               <SelectField
                 label={t("booking.floors")}
@@ -225,10 +207,10 @@ const BookingWidget = () => {
                 onChange={setNumFloors}
                 placeholder="—"
               >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4+">4+</option>
+                <option value="under-500">Under 500 sq ft</option>
+                <option value="500-1000">500–1,000 sq ft</option>
+                <option value="1000-2500">1,000–2,500 sq ft</option>
+                <option value="2500+">2,500+ sq ft</option>
               </SelectField>
 
               <SelectField
@@ -237,19 +219,17 @@ const BookingWidget = () => {
                 onChange={setMaterialPref}
                 placeholder="—"
               >
-                <option value="steel">{t("booking.steel")}</option>
-                <option value="glass">{t("booking.glass")}</option>
-                <option value="wood">{t("booking.wood")}</option>
-                <option value="marble">{t("booking.marble")}</option>
-                <option value="concrete">{t("booking.concrete")}</option>
-                <option value="wrought-iron">{t("booking.wroughtIron")}</option>
+                <option value="standard">{t("booking.steel")}</option>
+                <option value="stamped">{t("booking.glass")}</option>
+                <option value="exposed">{t("booking.wood")}</option>
+                <option value="asphalt">{t("booking.marble")}</option>
+                <option value="coloured">{t("booking.concrete")}</option>
+                <option value="interlock">{t("booking.wroughtIron")}</option>
               </SelectField>
             </div>
 
-            {/* Divider */}
             <div className="border-t border-border/30 pt-2" />
 
-            {/* Date Picker */}
             <div>
               <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">
                 {t("booking.date")}
@@ -280,7 +260,6 @@ const BookingWidget = () => {
               </Popover>
             </div>
 
-            {/* Time Slots */}
             {date && (
               <div>
                 <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-3 block">
@@ -307,7 +286,6 @@ const BookingWidget = () => {
               </div>
             )}
 
-            {/* Contact Info — shown after date is picked */}
             {date && (
               <div className="space-y-4 pt-2">
                 <div className="border-t border-border/30 pb-2" />
@@ -315,37 +293,19 @@ const BookingWidget = () => {
                   <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">
                     {t("contact.name")}
                   </label>
-                  <Input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder={t("contact.namePlaceholder")}
-                    className="h-11 border-border/50"
-                    required
-                  />
+                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("contact.namePlaceholder")} className="h-11 border-border/50" required />
                 </div>
                 <div>
                   <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">
                     {t("contact.phone")}
                   </label>
-                  <Input
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder={t("contact.phonePlaceholder")}
-                    className="h-11 border-border/50"
-                    required
-                  />
+                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={t("contact.phonePlaceholder")} className="h-11 border-border/50" required />
                 </div>
                 <div>
                   <label className="text-xs uppercase tracking-[0.15em] text-gold/80 font-medium mb-2 block">
                     {t("contact.emailLabel")}
                   </label>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t("contact.emailPlaceholder")}
-                    className="h-11 border-border/50"
-                  />
+                  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("contact.emailPlaceholder")} className="h-11 border-border/50" />
                 </div>
                 <Button type="submit" variant="gold" size="lg" className="w-full mt-2" disabled={isSubmitting}>
                   {isSubmitting ? t("contact.sending") : t("booking.book")}

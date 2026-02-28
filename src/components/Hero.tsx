@@ -41,7 +41,7 @@ const Hero = () => {
         >
           <img
             src={slide}
-            alt={`Luxury staircase ${index + 1}`}
+            alt={`Professional concrete and asphalt work ${index + 1}`}
             className="w-full h-full object-cover"
             fetchPriority={index === 0 ? "high" : "low"}
           />
@@ -106,7 +106,7 @@ const Hero = () => {
               onClick={() => scrollToSection("contact")}
             >
               {t("hero.cta1")}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:-translate-x-1" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button 
               variant="heroOutline" 

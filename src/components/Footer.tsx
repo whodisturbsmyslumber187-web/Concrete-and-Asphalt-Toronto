@@ -7,10 +7,10 @@ const Footer = () => {
 
   const footerLinks = {
     services: [
-      { label: "Residential Staircases", href: "#services" },
-      { label: "Commercial Solutions", href: "#services" },
-      { label: "Glass Railings", href: "#services" },
-      { label: "Steel Fabrication", href: "#services" },
+      { label: "Residential Concrete", href: "#services" },
+      { label: "Commercial Paving", href: "#services" },
+      { label: "Asphalt Services", href: "#services" },
+      { label: "Stamped Concrete", href: "#services" },
     ],
     company: [
       { label: "About Us", href: "#about" },
@@ -33,11 +33,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <span className="font-heading text-xl md:text-2xl font-semibold">
-              Apex<span className="text-gradient-gold">Stairs</span>
+              Apex<span className="text-gradient-gold">Paving</span>
             </span>
             <p className="text-primary-foreground/70 mt-3 md:mt-4 mb-4 md:mb-6 text-xs md:text-sm leading-relaxed">
-              Elevating Dubai's architectural landscape with bespoke staircases
-              and premium railings since 2008.
+              Toronto's trusted concrete and asphalt contractor serving the GTA
+              and Southern Ontario since 2001.
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
@@ -103,7 +103,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter / License */}
+          {/* Certifications */}
           <div>
             <h4 className="font-semibold uppercase tracking-wider text-sm mb-6">
               Certifications
@@ -111,24 +111,24 @@ const Footer = () => {
             <div className="space-y-4 text-sm text-primary-foreground/70">
               <p>
                 <span className="text-primary-foreground font-medium">
-                  Dubai Municipality License:
+                  WSIB Insured:
                 </span>
                 <br />
-                #DM-2024-STEEL-8847
+                #WSIB-2024-ON-4821
               </p>
               <p>
                 <span className="text-primary-foreground font-medium">
-                  ISO Certified:
+                  Licensed Contractor:
                 </span>
                 <br />
-                ISO 9001:2015
+                Ontario Business #BN-739281
               </p>
               <p>
                 <span className="text-primary-foreground font-medium">
-                  Trade License:
+                  Liability Insurance:
                 </span>
                 <br />
-                #TL-873294
+                $5M Coverage
               </p>
             </div>
           </div>
@@ -139,7 +139,7 @@ const Footer = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="container-narrow py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-primary-foreground/60">
-            © 2024 Apex Stairs & Railings. All rights reserved.
+            © 2025 Apex Paving & Concrete. All rights reserved.
           </p>
 
           {/* Legal Links */}
