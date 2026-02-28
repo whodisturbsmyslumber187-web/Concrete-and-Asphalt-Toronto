@@ -4,30 +4,30 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Michael & Sarah Chen",
+      name: "R. & S. Mitchell",
       role: "Homeowners",
       quote:
         "Apex Paving completely transformed our crumbling driveway. The stamped concrete looks incredible and the crew was professional from day one. Neighbours keep asking who did the work!",
       rating: 5,
-      location: "Oakville, ON",
+      location: "Southern Ontario",
     },
     {
       id: 2,
-      name: "David Thompson",
-      role: "Property Manager, GTA Commercial Properties",
+      name: "J. Pearson",
+      role: "Commercial Property Manager",
       quote:
         "We've used Apex for three parking lot repaving projects now. They work fast, stay on budget, and their asphalt quality is the best we've seen. Our tenants are always impressed.",
       rating: 5,
-      location: "Mississauga, ON",
+      location: "Greater Toronto Area",
     },
     {
       id: 3,
-      name: "Jennifer Kowalski",
-      role: "Homeowner",
+      name: "A. & M. Rivera",
+      role: "Homeowners",
       quote:
         "From the free estimate to the final seal coat, everything was seamless. Our new patio and walkway survived their first Ontario winter without a single crack. Worth every penny.",
       rating: 5,
-      location: "Richmond Hill, ON",
+      location: "Ontario",
     },
   ];
 
